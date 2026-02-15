@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gym Connect - Dashboard</title>
+</head>
+<body>
+  <div class="dashboard-container">
+    <header class="dashboard-header">
+      <h1>Salut, Andrei!</h1> 
+      <p class="subtitle">Sinteza progresului tău</p>
+    </header>
+
+    <section class="quick-stats">
+      <div class="stat-card">
+        <span class="stat-value text-success">+5%</span>
+        <span class="stat-label">Volum total (vs. luna trecută)</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value">12</span>
+        <span class="stat-label">Antrenamente (luna curentă)</span>
+      </div>
+    </section>
+
+    <button id="start-workout-btn" class="btn-primary large-touch-target">
+      Începe un Antrenament Nou
+    </button>
+
+    <section class="recent-history">
+      <h3>Istoric Recent</h3>
+      <ul id="history-list" class="history-list">
+        </ul>
+    </section>
+  </div>
+  
+  <script type="module" src="/src/script.js"></script>
+</body>
+</html>
