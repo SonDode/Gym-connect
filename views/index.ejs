@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gym Connect - <%= pageTitle %></title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" type="image/jpeg" href="/images/logo.jpeg">
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-brand">
+      <img src="/images/logo-color.png" alt="Gym Connect" class="nav-logo">
+      <span class="brand-name">Gym Connect</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/" class="active">Dashboard</a></li>
+      <li><a href="#">Antrenamente</a></li>
+      <li><a href="#">Progres</a></li>
+      <li><a href="#">Profil</a></li>
+    </ul>
+  </nav>
+
+  <main class="dashboard-container">
+    
+    <div class="dashboard-grid">
+      
+      <div class="main-column">
+        
+        <header class="panel header-panel">
+          <div>
+            <h1>Salut, <%= user.firstName %>!</h1> 
+            <p class="subtitle">Sinteza progresului tău de azi</p>
+          </div>
+        </header>
+
+        <section class="quick-stats">
+          <div class="panel stat-card">
+            <span class="stat-value <%= stats.volumeChange >= 0 ? 'text-success' : 'text-danger' %>">
+              <%= stats.volumeChange >= 0 ? '+' : '' %><%= stats.volumeChange %>%
+            </span>
+            <span class="stat-label">Volum total (vs. luna trecută)</span>
+          </div>
+          
+          <div class="panel stat-card">
+            <span class="stat-value"><%= stats.workoutsThisMonth %></span>
+            <span class="stat-label">Antrenamente (luna curentă)</span>
+          </div>
+        </section>
+
+        <section class="panel latest-workout">
+          <div class="workout-header-info">
+            <h3>Ultimul Antrenament: <span><%= latestWorkout.name %></span></h3>
+            <span class="workout-day"><%= latestWorkout.day %></span>
+          </div>
+          
+          <div class="exercise-grid">
+            <% latestWorkout.exercises.forEach(exercise => { %>
+              <div class="exercise-card">
+                <h4 class="exercise-name"><%= exercise.name %></h4>
+                <div class="sets-container">
+                  <div class="sets-header">
+                    <span>Set</span>
+                    <span>Kg</span>
+                    <span>Repetări</span>
+                  </div>
+                  <% exercise.sets.forEach(set => { %>
+                    <div class="sets-row">
+                      <span class="set-number"><%= set.number %></span>
+                      <span class="set-weight"><%= set.weight %> kg</span>
+                      <span class="set-reps"><%= set.reps %></span>
+                    </div>
+                  <% }); %>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        </section>
+
+      </div> <aside class="side-column">
+        
+        <button id="start-workout-btn" class="btn-primary large-touch-target">
+          Începe un Antrenament Nou
+        </button>
+
+        <section class="panel recent-history">
+          <h3>Istoric Recent</h3>
+          <ul id="history-list" class="history-list">
+            <% if (history.length > 0) { %>
+              <% history.forEach(workout => { %>
+                <li>
+                  <div class="workout-info">
+                    <span class="workout-date"><%= workout.date %></span>
+                    <span class="workout-type"><%= workout.type %></span>
+                  </div>
+                  <span class="workout-duration"><%= workout.duration %> min</span>
+                </li>
+              <% }); %>
+            <% } else { %>
+              <li class="empty-state">Nu ai antrenamente recente.</li>
+            <% } %>
+          </ul>
+        </section>
+
+      </aside> </div> </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Gym Connect. Toate drepturile rezervate.</p>
+  </footer>
+  
+  <script type="module" src="/js/script.js"></script>
+</body>
+</html>
