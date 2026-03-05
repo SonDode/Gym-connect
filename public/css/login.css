@@ -1,0 +1,245 @@
+/* Resetare de bază */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    background-color: #1a1a2e; /* Culoarea de fundal din imagine */
+    color: #e0e6ed; /* Culoarea de text din imagine */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header-ul */
+.main-header {
+    background-color: #1f1f2e; /* Culoarea cardurilor din imagine */
+    padding: 1.5rem 0;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    filter: brightness(0) saturate(100%) invert(32%) sepia(91%) saturate(1512%) hue-rotate(241deg) brightness(98%) contrast(92%); /* Aplica o tenta purpurie logoului */
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #8a2be2; /* Culoarea logoului din imagine */
+}
+
+.auth-nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-item {
+    color: #b0bec5; /* Culoarea navigației din imagine */
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+    color: #e0e6ed;
+}
+
+/* Zona centrală (Main) */
+.login-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10rem; /* Spatiu pentru header */
+    padding-bottom: 5rem;
+}
+
+/* Cardul de login */
+.login-card {
+    background-color: #252538; /* Fundalul închis al cardurilor din imagine */
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(108, 92, 231, 0.2); /* Umbră purpurie, similară cu marginile luminate */
+    border: 1px solid rgba(108, 92, 231, 0.1); /* Bordură subțire purpurie */
+    width: 100%;
+    max-width: 500px;
+}
+
+.form-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #e0e6ed;
+    margin-bottom: 0.75rem;
+    text-align: center;
+}
+
+.form-subtitle {
+    font-size: 1.1rem;
+    color: #b0bec5; /* Culoarea subtitlului din imagine */
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+label {
+    font-weight: 600;
+    color: #b0bec5; /* Culoarea label-urilor din imagine */
+    font-size: 1.1rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background-color: #1f1f2e; /* Fundalul inputurilor */
+    color: #e0e6ed;
+    border: 1px solid rgba(108, 92, 231, 0.2); /* Bordură purpurie */
+    border-radius: 8px;
+    margin-top: 0.75rem;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #8a2be2;
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.5); /* Lumină puternică violet pe focus */
+    outline: none;
+}
+
+.forgot-password {
+    color: #b0bec5;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #8a2be2;
+}
+
+/* Butonul principal */
+.btn-primary {
+    width: 100%;
+    padding: 1.25rem;
+    background-image: linear-gradient(135deg, #8a2be2, #6a1b9a); /* Gradient purpuriu, similar cu butonul din imagine */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 15px rgba(106, 27, 154, 0.4); /* Umbră purpurie puternică */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(106, 27, 154, 0.6);
+}
+
+.btn-primary:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px 8px rgba(106, 27, 154, 0.4);
+}
+
+/* Mesaje de eroare */
+.alert-danger {
+    color: #f44336; /* Un roșu mai închis pentru a se potrivi cu tema dark */
+    background-color: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    padding: 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Call to action */
+.register-cta {
+    margin-top: 2.5rem;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #b0bec5;
+}
+
+.register-cta a {
+    color: #8a2be2;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.register-cta a:hover {
+    color: #6a1b9a;
+}
+
+/* Footer-ul */
+.main-footer {
+    background-color: #1f1f2e; /* Culoarea footer-ului din imagine */
+    padding: 1.5rem 0;
+    width: 100%;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    text-align: center;
+}
+
+.copyright-text {
+    color: #b0bec5; /* Culoarea textului de copyright din imagine */
+    font-size: 1rem;
+}
+
+/* Media Queries pentru receptivitate (responsiveness) */
+@media (max-width: 768px) {
+    .login-card {
+        padding: 2rem;
+    }
+    
+    .form-title {
+        font-size: 1.75rem;
+    }
+    
+    .form-subtitle {
+        font-size: 1rem;
+    }
+    
+    .logo-text {
+        font-size: 1.25rem;
+    }
+}

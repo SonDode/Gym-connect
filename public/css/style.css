@@ -330,6 +330,17 @@ body {
   color: var(--success);
 }
 
+/* Stilizare specifică pentru butonul de Deconectare */
+.nav-links .logout-link {
+    color: #ff4d4d; /* Un roșu subtil pentru avertizare */
+    font-weight: 600;
+}
+
+.nav-links .logout-link:hover {
+    color: #ff1a1a;
+    text-shadow: 0 0 8px rgba(255, 77, 77, 0.4);
+}
+
 /* --- 8. Footer --- */
 .footer {
   text-align: center;

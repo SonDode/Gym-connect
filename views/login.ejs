@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Connect - Autentificare</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/jpeg" href="/images/logo.jpeg">
+
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="/img/gymconnect_logo.svg" alt="Gym Connect Logo" class="logo-icon">
+                <span class="logo-text">Gym Connect</span>
+            </div>
+            <nav class="auth-nav">
+                <a href="#" class="nav-item">Înregistrare</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="login-wrapper">
+        <div class="login-card">
+            <h2 class="form-title">Bun venit înapoi</h2>
+            <p class="form-subtitle">Autentifică-te pentru a continua antrenamentul</p>
+            
+            <% if (typeof error !== 'undefined') { %>
+                <div class="alert alert-danger"><%= error %></div>
+            <% } %>
+
+            <form action="/login" method="POST">
+                <div class="form-group">
+                    <label for="email">Adresă Email</label>
+                    <input type="email" id="email" name="email" required autocomplete="email" placeholder="email@exemplu.ro">
+                </div>
+                <div class="form-group">
+                    <div class="label-row">
+                        <label for="password">Parolă</label>
+                        <a href="#" class="forgot-password">Ai uitat parola?</a>
+                    </div>
+                    <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="Parola ta">
+                </div>
+                <button type="submit" class="btn-primary">Intră în cont</button>
+            </form>
+            <div class="register-cta">
+                <p>Nu ai un cont? <a href="#">Înregistrează-te acum</a></p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-container">
+            <p class="copyright-text">&copy; 2026 Gym Connect. Toate drepturile rezervate.</p>
+        </div>
+    </footer>
+</body>
+</html>
