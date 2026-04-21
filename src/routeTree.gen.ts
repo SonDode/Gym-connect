@@ -14,7 +14,9 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard.index'
+import { Route as DashboardWorkoutRouteImport } from './routes/dashboard.workout'
 import { Route as DashboardSplitsRouteImport } from './routes/dashboard.splits'
+import { Route as DashboardAnalyticsRouteImport } from './routes/dashboard.analytics'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -41,9 +43,19 @@ const DashboardIndexRoute = DashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardWorkoutRoute = DashboardWorkoutRouteImport.update({
+  id: '/workout',
+  path: '/workout',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardSplitsRoute = DashboardSplitsRouteImport.update({
   id: '/splits',
   path: '/splits',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardAnalyticsRoute = DashboardAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
   getParentRoute: () => DashboardRoute,
 } as any)
 
@@ -52,14 +64,18 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/splits': typeof DashboardSplitsRoute
+  '/dashboard/workout': typeof DashboardWorkoutRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/splits': typeof DashboardSplitsRoute
+  '/dashboard/workout': typeof DashboardWorkoutRoute
   '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
@@ -68,7 +84,9 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/dashboard/analytics': typeof DashboardAnalyticsRoute
   '/dashboard/splits': typeof DashboardSplitsRoute
+  '/dashboard/workout': typeof DashboardWorkoutRoute
   '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
@@ -78,17 +96,28 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/login'
     | '/register'
+    | '/dashboard/analytics'
     | '/dashboard/splits'
+    | '/dashboard/workout'
     | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/register' | '/dashboard/splits' | '/dashboard'
+  to:
+    | '/'
+    | '/login'
+    | '/register'
+    | '/dashboard/analytics'
+    | '/dashboard/splits'
+    | '/dashboard/workout'
+    | '/dashboard'
   id:
     | '__root__'
     | '/'
     | '/dashboard'
     | '/login'
     | '/register'
+    | '/dashboard/analytics'
     | '/dashboard/splits'
+    | '/dashboard/workout'
     | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
@@ -136,6 +165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardIndexRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/workout': {
+      id: '/dashboard/workout'
+      path: '/workout'
+      fullPath: '/dashboard/workout'
+      preLoaderRoute: typeof DashboardWorkoutRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/splits': {
       id: '/dashboard/splits'
       path: '/splits'
@@ -143,16 +179,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSplitsRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/analytics': {
+      id: '/dashboard/analytics'
+      path: '/analytics'
+      fullPath: '/dashboard/analytics'
+      preLoaderRoute: typeof DashboardAnalyticsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
   }
 }
 
 interface DashboardRouteChildren {
+  DashboardAnalyticsRoute: typeof DashboardAnalyticsRoute
   DashboardSplitsRoute: typeof DashboardSplitsRoute
+  DashboardWorkoutRoute: typeof DashboardWorkoutRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardAnalyticsRoute: DashboardAnalyticsRoute,
   DashboardSplitsRoute: DashboardSplitsRoute,
+  DashboardWorkoutRoute: DashboardWorkoutRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
 
