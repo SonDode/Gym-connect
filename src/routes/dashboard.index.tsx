@@ -24,9 +24,7 @@ function HistoryPage() {
     return (
       <div className="rounded-2xl border border-dashed border-border bg-card/40 p-12 text-center">
         <Dumbbell className="mx-auto h-10 w-10 text-muted-foreground" />
-        <h3 className="mt-4 font-display text-xl font-semibold">
-          Niciun antrenament logat
-        </h3>
+        <h3 className="mt-4 font-display text-xl font-semibold">Niciun antrenament logat</h3>
         <p className="mt-1 text-sm text-muted-foreground">
           Începe prima ta sesiune și progresul tău va apărea aici.
         </p>
@@ -38,25 +36,16 @@ function HistoryPage() {
   }
 
   // Stats top-row: total antrenamente, volum total, sesiune medie
-  const totalVolume = sessions.reduce(
-    (s, sess) => s + sessionVolume(sess.sets),
-    0
-  );
+  const totalVolume = sessions.reduce((s, sess) => s + sessionVolume(sess.sets), 0);
   const avgDuration = Math.round(
-    sessions.reduce((s, sess) => s + sess.durationSeconds, 0) /
-      sessions.length /
-      60
+    sessions.reduce((s, sess) => s + sess.durationSeconds, 0) / sessions.length / 60,
   );
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-3xl font-bold tracking-tight">
-          Jurnalul tău
-        </h1>
-        <p className="mt-1 text-muted-foreground">
-          {sessions.length} antrenamente înregistrate
-        </p>
+        <h1 className="font-display text-3xl font-bold tracking-tight">Jurnalul tău</h1>
+        <p className="mt-1 text-muted-foreground">{sessions.length} antrenamente înregistrate</p>
       </div>
 
       <div className="grid gap-3 md:grid-cols-3">
@@ -130,7 +119,7 @@ function SessionCard({ session }: { session: ReturnType<typeof useSessions>["ses
     let count = 0;
     byExercise.forEach(([, sets]) => {
       const maxRm = Math.max(
-        ...sets.filter((s) => !s.isWarmup).map((s) => predict1RM(s.weight, s.reps, s.rir))
+        ...sets.filter((s) => !s.isWarmup).map((s) => predict1RM(s.weight, s.reps, s.rir)),
       );
       if (maxRm > 0) count++;
     });
@@ -148,16 +137,12 @@ function SessionCard({ session }: { session: ReturnType<typeof useSessions>["ses
             <Calendar className="h-3 w-3" />
             {format(new Date(session.date), "EEEE, d MMM", { locale: ro })}
           </div>
-          <h3 className="mt-1 truncate font-display text-lg font-semibold">
-            {session.splitName}
-          </h3>
+          <h3 className="mt-1 truncate font-display text-lg font-semibold">{session.splitName}</h3>
         </div>
         <div className="flex shrink-0 items-center gap-4 text-sm">
           <div className="text-right">
             <div className="text-xs text-muted-foreground">Volum</div>
-            <div className="font-mono font-semibold">
-              {volume.toLocaleString("ro-RO")} kg
-            </div>
+            <div className="font-mono font-semibold">{volume.toLocaleString("ro-RO")} kg</div>
           </div>
           <div className="text-right">
             <div className="text-xs text-muted-foreground">Durată</div>
@@ -191,9 +176,7 @@ function SessionCard({ session }: { session: ReturnType<typeof useSessions>["ses
                         }`}
                       >
                         <span className="w-6 font-mono text-xs">{i + 1}</span>
-                        <span className="font-mono font-semibold">
-                          {s.weight} kg
-                        </span>
+                        <span className="font-mono font-semibold">{s.weight} kg</span>
                         <span className="text-muted-foreground">×</span>
                         <span className="font-mono font-semibold">{s.reps}</span>
                         {s.isWarmup ? (

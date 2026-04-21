@@ -39,6 +39,10 @@ type Action =
   | { type: "TOGGLE_COMPLETE"; setId: string }
   | { type: "RESET" };
 
+/**
+ * Reducer-ul principal pentru sesiunea activă de antrenament.
+ * Gestionează ciclul complet: start, editări seturi, completare și reset.
+ */
 function reducer(state: ActiveSession | null, action: Action): ActiveSession | null {
   switch (action.type) {
     case "START":
@@ -71,9 +75,7 @@ function reducer(state: ActiveSession | null, action: Action): ActiveSession | n
         case "UPDATE_SET":
           return {
             ...state,
-            sets: state.sets.map((s) =>
-              s.id === action.setId ? { ...s, ...action.patch } : s
-            ),
+            sets: state.sets.map((s) => (s.id === action.setId ? { ...s, ...action.patch } : s)),
           };
         case "REMOVE_SET":
           return { ...state, sets: state.sets.filter((s) => s.id !== action.setId) };
@@ -81,7 +83,7 @@ function reducer(state: ActiveSession | null, action: Action): ActiveSession | n
           return {
             ...state,
             sets: state.sets.map((s) =>
-              s.id === action.setId ? { ...s, completed: !s.completed } : s
+              s.id === action.setId ? { ...s, completed: !s.completed } : s,
             ),
           };
         default:
@@ -109,6 +111,9 @@ const WorkoutContext = createContext<WorkoutContextValue | null>(null);
 
 const ACTIVE_KEY = "forcelab.active-session";
 
+/**
+ * Provider global pentru sesiunea de workout activă + timerul de pauză.
+ */
 export function WorkoutProvider({ children }: { children: ReactNode }) {
   const [active, dispatch] = useReducer(reducer, null);
   const { addSession } = useSessions();
@@ -157,34 +162,31 @@ export function WorkoutProvider({ children }: { children: ReactNode }) {
     return () => clearInterval(t);
   }, [restRemaining]);
 
-  const startWorkout = useCallback(
-    (split: SplitTemplate, lastSets?: WorkoutSet[]) => {
-      // Smart Defaults: pre-completăm cu ultima performanță
-      const primed: ActiveSet[] = [];
-      split.exercises
-        .sort((a, b) => a.order - b.order)
-        .forEach((sx) => {
-          const previous = (lastSets ?? [])
-            .filter((s) => s.exerciseId === sx.exerciseId && !s.isWarmup)
-            .sort((a, b) => a.setOrder - b.setOrder);
-          for (let i = 0; i < sx.targetSets; i++) {
-            const prev = previous[i] ?? previous[previous.length - 1];
-            primed.push({
-              id: `set-${Date.now()}-${sx.exerciseId}-${i}`,
-              exerciseId: sx.exerciseId,
-              setOrder: i,
-              weight: prev?.weight ?? 20,
-              reps: prev?.reps ?? (Number(sx.targetRepRange.split("-")[0]) || 8),
-              rir: 2,
-              isWarmup: false,
-              completed: false,
-            });
-          }
-        });
-      dispatch({ type: "START", split, primedSets: primed });
-    },
-    []
-  );
+  const startWorkout = useCallback((split: SplitTemplate, lastSets?: WorkoutSet[]) => {
+    // Smart Defaults: pre-completăm cu ultima performanță
+    const primed: ActiveSet[] = [];
+    split.exercises
+      .sort((a, b) => a.order - b.order)
+      .forEach((sx) => {
+        const previous = (lastSets ?? [])
+          .filter((s) => s.exerciseId === sx.exerciseId && !s.isWarmup)
+          .sort((a, b) => a.setOrder - b.setOrder);
+        for (let i = 0; i < sx.targetSets; i++) {
+          const prev = previous[i] ?? previous[previous.length - 1];
+          primed.push({
+            id: `set-${Date.now()}-${sx.exerciseId}-${i}`,
+            exerciseId: sx.exerciseId,
+            setOrder: i,
+            weight: prev?.weight ?? 20,
+            reps: prev?.reps ?? (Number(sx.targetRepRange.split("-")[0]) || 8),
+            rir: 2,
+            isWarmup: false,
+            completed: false,
+          });
+        }
+      });
+    dispatch({ type: "START", split, primedSets: primed });
+  }, []);
 
   const addSet = useCallback((exerciseId: string, template?: Partial<ActiveSet>) => {
     dispatch({ type: "ADD_SET", exerciseId, templateSet: template });
@@ -211,9 +213,7 @@ export function WorkoutProvider({ children }: { children: ReactNode }) {
       splitId: active.splitId,
       splitName: active.splitName,
       date: active.startedAt,
-      durationSeconds: Math.round(
-        (Date.now() - new Date(active.startedAt).getTime()) / 1000
-      ),
+      durationSeconds: Math.round((Date.now() - new Date(active.startedAt).getTime()) / 1000),
       sets: completedSets.map((s, idx) => ({
         id: `s-${Date.now()}-${idx}`,
         exerciseId: s.exerciseId,
@@ -257,6 +257,9 @@ export function WorkoutProvider({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * Hook utilitar pentru acces tip-safe la contextul de workout.
+ */
 export function useWorkout() {
   const ctx = useContext(WorkoutContext);
   if (!ctx) throw new Error("useWorkout must be used within WorkoutProvider");

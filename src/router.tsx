@@ -1,6 +1,9 @@
 import { createRouter, useRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 
+/**
+ * Componenta globală de fallback pentru erorile de rutare/render.
+ */
 function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   const router = useRouter();
 
@@ -54,6 +57,9 @@ function DefaultErrorComponent({ error, reset }: { error: Error; reset: () => vo
   );
 }
 
+/**
+ * Creează instanța principală de router a aplicației.
+ */
 export const getRouter = () => {
   const router = createRouter({
     routeTree,

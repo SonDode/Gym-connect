@@ -14,26 +14,24 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useWorkout } from "@/lib/workout-context";
 import { useSplits, useSessions } from "@/lib/store";
 import { getExerciseById } from "@/data/exercises";
 import { calculatePlates, predict1RM, setVolume } from "@/lib/strength-math";
 import { toast } from "sonner";
 
+// Ruta principală pentru fluxul de antrenament activ.
 export const Route = createFileRoute("/dashboard/workout")({
   head: () => ({ meta: [{ title: "Antrenament — Gym-Connect" }] }),
   component: WorkoutPage,
 });
 
+/**
+ * Ecranul complet de workout: picker de split, timer live, editare seturi și finalizare.
+ */
 function WorkoutPage() {
-  const { active, finishWorkout, cancelWorkout, restRemaining, stopRest } =
-    useWorkout();
+  const { active, finishWorkout, cancelWorkout, restRemaining, stopRest } = useWorkout();
   const navigate = useNavigate();
   const { splits } = useSplits();
   const [elapsed, setElapsed] = useState(0);
@@ -43,9 +41,7 @@ function WorkoutPage() {
   useEffect(() => {
     if (!active) return;
     const id = setInterval(() => {
-      setElapsed(
-        Math.floor((Date.now() - new Date(active.startedAt).getTime()) / 1000)
-      );
+      setElapsed(Math.floor((Date.now() - new Date(active.startedAt).getTime()) / 1000));
     }, 1000);
     return () => clearInterval(id);
   }, [active]);
@@ -55,12 +51,8 @@ function WorkoutPage() {
     return (
       <div className="space-y-6">
         <div>
-          <h1 className="font-display text-3xl font-bold tracking-tight">
-            Începe un antrenament
-          </h1>
-          <p className="mt-1 text-muted-foreground">
-            Alege rutina pe care o vrei astăzi.
-          </p>
+          <h1 className="font-display text-3xl font-bold tracking-tight">Începe un antrenament</h1>
+          <p className="mt-1 text-muted-foreground">Alege rutina pe care o vrei astăzi.</p>
         </div>
 
         <div className="grid gap-3 md:grid-cols-2">
@@ -75,13 +67,9 @@ function WorkoutPage() {
               className="rounded-2xl border border-border bg-card p-5 text-left transition-all hover:border-primary/50 hover:shadow-glow"
             >
               <h3 className="font-display text-lg font-semibold">{split.name}</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                {split.description}
-              </p>
+              <p className="mt-1 text-sm text-muted-foreground">{split.description}</p>
               <div className="mt-3 flex items-center justify-between text-xs">
-                <span className="text-muted-foreground">
-                  {split.exercises.length} exerciții
-                </span>
+                <span className="text-muted-foreground">{split.exercises.length} exerciții</span>
                 <span className="flex items-center gap-1 font-semibold text-primary">
                   <Play className="h-3 w-3 fill-current" />
                   Start
@@ -149,10 +137,7 @@ function WorkoutPage() {
               <Timer className="h-4 w-4" />
               Pauză: {formatTime(restRemaining)}
             </div>
-            <button
-              onClick={stopRest}
-              className="text-xs text-primary hover:underline"
-            >
+            <button onClick={stopRest} className="text-xs text-primary hover:underline">
               Stop
             </button>
           </div>
@@ -187,6 +172,9 @@ function WorkoutPage() {
   );
 }
 
+/**
+ * Grup logic/visual pentru toate seriile unui exercițiu.
+ */
 function ExerciseBlock({
   exerciseId,
   sets,
@@ -237,27 +225,22 @@ function ExerciseBlock({
       </div>
 
       <div className="p-2">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => addSet(exerciseId)}
-          className="w-full"
-        >
+        <Button variant="ghost" size="sm" onClick={() => addSet(exerciseId)} className="w-full">
           <Plus className="mr-1 h-4 w-4" />
           Adaugă serie
         </Button>
       </div>
 
       {calcOpen !== null && (
-        <PlateCalc
-          weight={sets[calcOpen].weight}
-          onClose={() => setCalcOpen(null)}
-        />
+        <PlateCalc weight={sets[calcOpen].weight} onClose={() => setCalcOpen(null)} />
       )}
     </div>
   );
 }
 
+/**
+ * Rând editabil pentru o serie individuală (greutate, reps, RIR, acțiuni).
+ */
 function SetRow({
   set,
   index,
@@ -266,13 +249,22 @@ function SetRow({
   onRemove,
   onOpenCalc,
 }: {
-  set: { id: string; weight: number; reps: number; rir: number; isWarmup: boolean; completed: boolean };
+  set: {
+    id: string;
+    weight: number;
+    reps: number;
+    rir: number;
+    isWarmup: boolean;
+    completed: boolean;
+  };
   index: number;
   onUpdate: (patch: Partial<typeof set>) => void;
   onComplete: () => void;
   onRemove: () => void;
   onOpenCalc: () => void;
 }) {
+  // Normalizează reps la intervalul permis în UI: 1..100.
+  const clampReps = (value: number) => Math.min(100, Math.max(1, Math.round(value)));
   const rm = predict1RM(set.weight, set.reps, set.rir);
 
   return (
@@ -298,7 +290,7 @@ function SetRow({
           inputMode="decimal"
           value={set.weight}
           onChange={(e) => onUpdate({ weight: Number(e.target.value) })}
-          className="h-9 w-16 text-center font-mono"
+          className="h-9 w-20 text-center font-mono"
         />
         <button
           onClick={() => onUpdate({ weight: set.weight + 2.5 })}
@@ -311,7 +303,7 @@ function SetRow({
       {/* Reps */}
       <div className="flex items-center gap-1">
         <button
-          onClick={() => onUpdate({ reps: Math.max(1, set.reps - 1) })}
+          onClick={() => onUpdate({ reps: clampReps(set.reps - 1) })}
           className="flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-muted-foreground hover:bg-secondary/70"
         >
           <Minus className="h-4 w-4" />
@@ -319,12 +311,15 @@ function SetRow({
         <Input
           type="number"
           inputMode="numeric"
+          min={1}
+          max={100}
+          step={1}
           value={set.reps}
-          onChange={(e) => onUpdate({ reps: Number(e.target.value) })}
-          className="h-9 w-12 text-center font-mono"
+          onChange={(e) => onUpdate({ reps: clampReps(Number(e.target.value)) })}
+          className="h-9 w-16 text-center font-mono"
         />
         <button
-          onClick={() => onUpdate({ reps: set.reps + 1 })}
+          onClick={() => onUpdate({ reps: clampReps(set.reps + 1) })}
           className="flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-muted-foreground hover:bg-secondary/70"
         >
           <Plus className="h-4 w-4" />
@@ -347,10 +342,7 @@ function SetRow({
 
       {/* RM hint */}
       {!set.isWarmup && rm > 0 && (
-        <div
-          className="hidden text-xs text-primary md:block"
-          title={`1RM estimat (Brzycki+Epley)`}
-        >
+        <div className="hidden text-xs text-primary md:block" title={`1RM estimat (Brzycki+Epley)`}>
           ~{rm.toFixed(0)}
         </div>
       )}
@@ -384,13 +376,10 @@ function SetRow({
   );
 }
 
-function PlateCalc({
-  weight,
-  onClose,
-}: {
-  weight: number;
-  onClose: () => void;
-}) {
+/**
+ * Dialog pentru calculul discurilor necesare pe fiecare parte a barei.
+ */
+function PlateCalc({ weight, onClose }: { weight: number; onClose: () => void }) {
   const result = calculatePlates(weight);
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
@@ -411,9 +400,7 @@ function PlateCalc({
               Per parte (bară 20kg)
             </div>
             {result.perSide.length === 0 ? (
-              <div className="text-sm text-muted-foreground">
-                Bară goală — sub 20kg
-              </div>
+              <div className="text-sm text-muted-foreground">Bară goală — sub 20kg</div>
             ) : (
               <div className="space-y-1">
                 {result.perSide.map((p) => (
@@ -439,11 +426,11 @@ function PlateCalc({
   );
 }
 
+/**
+ * Formatează secunde în format mm:ss pentru timer și pauză.
+ */
 function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;
   return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
 }
-
-
-

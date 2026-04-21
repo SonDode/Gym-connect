@@ -15,15 +15,8 @@ import {
 } from "recharts";
 import { TrendingUp, Brain, Zap, AlertTriangle } from "lucide-react";
 import { useSessions } from "@/lib/store";
-import {
-  EXERCISE_LIBRARY,
-  getExerciseById,
-} from "@/data/exercises";
-import {
-  predict1RM,
-  linearRegression,
-  sessionVolume,
-} from "@/lib/strength-math";
+import { EXERCISE_LIBRARY, getExerciseById } from "@/data/exercises";
+import { predict1RM, linearRegression, sessionVolume } from "@/lib/strength-math";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 
@@ -42,17 +35,14 @@ function AnalyticsPage() {
     sessions.forEach((sess) =>
       sess.sets
         .filter((s) => !s.isWarmup)
-        .forEach((s) => counts.set(s.exerciseId, (counts.get(s.exerciseId) ?? 0) + 1))
+        .forEach((s) => counts.set(s.exerciseId, (counts.get(s.exerciseId) ?? 0) + 1)),
     );
-    return EXERCISE_LIBRARY.filter(
-      (ex) => ex.isCompound && (counts.get(ex.id) ?? 0) >= 4
-    );
+    return EXERCISE_LIBRARY.filter((ex) => ex.isCompound && (counts.get(ex.id) ?? 0) >= 4);
   }, [sessions, loaded]);
 
   const [selectedEx, setSelectedEx] = useState<string>("");
 
-  const activeEx =
-    selectedEx || trackableExercises[0]?.id || "";
+  const activeEx = selectedEx || trackableExercises[0]?.id || "";
 
   // Date pentru graficul de volum săptămânal
   const weeklyVolume = useMemo(() => {
@@ -87,7 +77,7 @@ function AnalyticsPage() {
             t: new Date(sess.date).getTime(),
             date: sess.date,
             rm: predict1RM(s.weight, s.reps, s.rir),
-          }))
+          })),
       )
       .sort((a, b) => a.t - b.t);
 
@@ -182,11 +172,7 @@ function AnalyticsPage() {
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="oklch(0.27 0.014 250)" strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="label"
-                  stroke="oklch(0.65 0.015 250)"
-                  fontSize={12}
-                />
+                <XAxis dataKey="label" stroke="oklch(0.65 0.015 250)" fontSize={12} />
                 <YAxis
                   stroke="oklch(0.65 0.015 250)"
                   fontSize={12}
@@ -265,15 +251,8 @@ function AnalyticsPage() {
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={oneRmData.combined}>
-                  <CartesianGrid
-                    stroke="oklch(0.27 0.014 250)"
-                    strokeDasharray="3 3"
-                  />
-                  <XAxis
-                    dataKey="label"
-                    stroke="oklch(0.65 0.015 250)"
-                    fontSize={11}
-                  />
+                  <CartesianGrid stroke="oklch(0.27 0.014 250)" strokeDasharray="3 3" />
+                  <XAxis dataKey="label" stroke="oklch(0.65 0.015 250)" fontSize={11} />
                   <YAxis
                     stroke="oklch(0.65 0.015 250)"
                     fontSize={12}
@@ -287,10 +266,7 @@ function AnalyticsPage() {
                       borderRadius: 12,
                     }}
                   />
-                  <Legend
-                    wrapperStyle={{ paddingTop: 16, fontSize: 12 }}
-                    iconType="line"
-                  />
+                  <Legend wrapperStyle={{ paddingTop: 16, fontSize: 12 }} iconType="line" />
                   <ReferenceLine
                     x={oneRmData.points[oneRmData.points.length - 1].label}
                     stroke="oklch(0.65 0.015 250)"
@@ -335,11 +311,9 @@ function AnalyticsPage() {
 
             <div className="mt-4 rounded-lg border border-border/60 bg-background/40 p-3 text-xs text-muted-foreground">
               <Zap className="mr-1 inline h-3 w-3 text-primary" />
-              1RM = media între formulele <strong>Brzycki</strong> și{" "}
-              <strong>Epley</strong>, aplicate pe (reps + RIR). R² ={" "}
-              <span className="font-mono">
-                {(oneRmData.regression!.r2 * 100).toFixed(0)}%
-              </span>
+              1RM = media între formulele <strong>Brzycki</strong> și <strong>Epley</strong>,
+              aplicate pe (reps + RIR). R² ={" "}
+              <span className="font-mono">{(oneRmData.regression!.r2 * 100).toFixed(0)}%</span>
             </div>
           </>
         )}
@@ -361,9 +335,7 @@ function MiniMetric({
 }) {
   return (
     <div className="rounded-xl border border-border bg-background/40 p-3">
-      <div className="text-xs uppercase tracking-wider text-muted-foreground">
-        {label}
-      </div>
+      <div className="text-xs uppercase tracking-wider text-muted-foreground">{label}</div>
       <div
         className={`mt-1 font-mono text-xl font-bold ${
           positive === true ? "text-success" : positive === false ? "text-destructive" : ""
@@ -371,9 +343,7 @@ function MiniMetric({
       >
         {value}
       </div>
-      {hint && (
-        <div className="mt-0.5 truncate text-xs text-muted-foreground">{hint}</div>
-      )}
+      {hint && <div className="mt-0.5 truncate text-xs text-muted-foreground">{hint}</div>}
     </div>
   );
 }

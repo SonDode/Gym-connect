@@ -1,14 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import {
-  Plus,
-  Trash2,
-  Dumbbell,
-  Search,
-  Play,
-  ChevronDown,
-  X,
-} from "lucide-react";
+import { Plus, Trash2, Dumbbell, Search, Play, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -61,9 +53,7 @@ function SplitsPage() {
       <div className="flex items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-bold tracking-tight">Rutine</h1>
-          <p className="mt-1 text-muted-foreground">
-            Construiește-ți split-urile personalizate.
-          </p>
+          <p className="mt-1 text-muted-foreground">Construiește-ți split-urile personalizate.</p>
         </div>
         <Button
           onClick={() =>
@@ -193,9 +183,7 @@ function SplitEditor({
   const updateExercise = (exerciseId: string, patch: Partial<SplitExercise>) => {
     setDraft({
       ...draft,
-      exercises: draft.exercises.map((e) =>
-        e.exerciseId === exerciseId ? { ...e, ...patch } : e
-      ),
+      exercises: draft.exercises.map((e) => (e.exerciseId === exerciseId ? { ...e, ...patch } : e)),
     });
   };
 
@@ -234,11 +222,7 @@ function SplitEditor({
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label>Exerciții ({draft.exercises.length})</Label>
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setPickerOpen(true)}
-              >
+              <Button size="sm" variant="outline" onClick={() => setPickerOpen(true)}>
                 <Plus className="mr-1 h-4 w-4" />
                 Adaugă
               </Button>
@@ -366,11 +350,7 @@ function ExercisePicker({
               Toate
             </FilterChip>
             {(Object.keys(MUSCLE_GROUP_LABELS) as MuscleGroup[]).map((m) => (
-              <FilterChip
-                key={m}
-                active={muscle === m}
-                onClick={() => setMuscle(m)}
-              >
+              <FilterChip key={m} active={muscle === m} onClick={() => setMuscle(m)}>
                 {MUSCLE_GROUP_LABELS[m]}
               </FilterChip>
             ))}
@@ -401,13 +381,10 @@ function ExercisePicker({
                   <div className="min-w-0">
                     <div className="truncate font-medium">{ex.name}</div>
                     <div className="text-xs text-muted-foreground">
-                      {MUSCLE_GROUP_LABELS[ex.muscleGroup]} ·{" "}
-                      {EQUIPMENT_LABELS[ex.equipmentType]}
+                      {MUSCLE_GROUP_LABELS[ex.muscleGroup]} · {EQUIPMENT_LABELS[ex.equipmentType]}
                     </div>
                   </div>
-                  {taken && (
-                    <span className="text-xs text-muted-foreground">Adăugat</span>
-                  )}
+                  {taken && <span className="text-xs text-muted-foreground">Adăugat</span>}
                 </button>
               );
             })}

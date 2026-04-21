@@ -14,6 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
 
+// Ruta de landing publică a aplicației.
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -33,6 +34,9 @@ export const Route = createFileRoute("/")({
   component: LandingPage,
 });
 
+/**
+ * Pagina de prezentare (marketing) cu CTA către autentificare/dashboard.
+ */
 function LandingPage() {
   const { isAuthenticated } = useAuth();
 
@@ -45,9 +49,7 @@ function LandingPage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-primary shadow-glow">
               <Dumbbell className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="font-display text-xl font-bold tracking-tight">
-              Gym-Connect
-            </span>
+            <span className="font-display text-xl font-bold tracking-tight">Gym-Connect</span>
           </Link>
           <div className="flex items-center gap-2">
             {isAuthenticated ? (
@@ -89,15 +91,14 @@ function LandingPage() {
               Sport science · În timp real
             </div>
             <h1 className="font-display text-5xl font-bold leading-[1.05] tracking-tighter md:text-7xl">
-              Antrenamente fără{" "}
-              <span className="text-gradient-primary">presupuneri</span>.
+              Antrenamente fără <span className="text-gradient-primary">presupuneri</span>.
               <br />
               Doar progres măsurabil.
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
-              Gym-Connect îți transformă fiecare serie într-un punct de date.
-              Predicție 1RM, monitorizare RIR și grafice de regresie liniară —
-              construite pentru sportivi serioși care vor să elimine stagnarea.
+              Gym-Connect îți transformă fiecare serie într-un punct de date. Predicție 1RM,
+              monitorizare RIR și grafice de regresie liniară — construite pentru sportivi serioși
+              care vor să elimine stagnarea.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link to="/register">
@@ -160,8 +161,8 @@ function LandingPage() {
               <span className="text-gradient-primary">mai puternic</span>.
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Patru piloni care transformă timpul petrecut în sală în adaptări
-              fiziologice măsurabile.
+              Patru piloni care transformă timpul petrecut în sală în adaptări fiziologice
+              măsurabile.
             </p>
           </div>
 
@@ -226,9 +227,15 @@ function LandingPage() {
             <span>© {new Date().getFullYear()} Gym-Connect</span>
           </div>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-foreground">Termeni</a>
-            <a href="#" className="hover:text-foreground">Confidențialitate</a>
-            <a href="#" className="hover:text-foreground">Contact</a>
+            <a href="#" className="hover:text-foreground">
+              Termeni
+            </a>
+            <a href="#" className="hover:text-foreground">
+              Confidențialitate
+            </a>
+            <a href="#" className="hover:text-foreground">
+              Contact
+            </a>
           </div>
         </div>
       </footer>
@@ -236,6 +243,9 @@ function LandingPage() {
   );
 }
 
+/**
+ * Card de metrică demo folosit în secțiunea hero.
+ */
 function DemoStat({
   icon,
   label,
@@ -264,6 +274,9 @@ function DemoStat({
   );
 }
 
+/**
+ * Card de funcționalitate folosit în secțiunea de beneficii.
+ */
 function FeatureCard({
   icon,
   title,

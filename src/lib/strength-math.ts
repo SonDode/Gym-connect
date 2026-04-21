@@ -72,9 +72,7 @@ export type RegressionResult = {
   r2: number;
 };
 
-export function linearRegression(
-  points: Array<{ x: number; y: number }>
-): RegressionResult {
+export function linearRegression(points: Array<{ x: number; y: number }>): RegressionResult {
   const n = points.length;
   if (n === 0) {
     return { slope: 0, intercept: 0, predict: () => 0, r2: 0 };
@@ -98,10 +96,7 @@ export function linearRegression(
 
   // R^2
   const ssTot = points.reduce((s, p) => s + Math.pow(p.y - meanY, 2), 0);
-  const ssRes = points.reduce(
-    (s, p) => s + Math.pow(p.y - (intercept + slope * p.x), 2),
-    0
-  );
+  const ssRes = points.reduce((s, p) => s + Math.pow(p.y - (intercept + slope * p.x), 2), 0);
   const r2 = ssTot === 0 ? 1 : 1 - ssRes / ssTot;
 
   return {
@@ -127,7 +122,7 @@ export type PlateLoadout = {
 export function calculatePlates(
   targetWeight: number,
   barWeight = 20,
-  plates: number[] = STANDARD_PLATES
+  plates: number[] = STANDARD_PLATES,
 ): PlateLoadout {
   if (targetWeight < barWeight) {
     return { perSide: [], achievable: barWeight, remainder: 0 };
@@ -142,9 +137,7 @@ export function calculatePlates(
     }
   }
   const remainder = Math.round(perSideWeight * 100) / 100;
-  const totalLoaded =
-    barWeight +
-    2 * result.reduce((s, p) => s + p.weight * p.count, 0);
+  const totalLoaded = barWeight + 2 * result.reduce((s, p) => s + p.weight * p.count, 0);
   return { perSide: result, achievable: totalLoaded, remainder };
 }
 
@@ -159,9 +152,7 @@ export function setVolume(weight: number, reps: number): number {
  * Volum total al unei sesiuni.
  */
 export function sessionVolume(
-  sets: Array<{ weight: number; reps: number; isWarmup?: boolean }>
+  sets: Array<{ weight: number; reps: number; isWarmup?: boolean }>,
 ): number {
-  return sets
-    .filter((s) => !s.isWarmup)
-    .reduce((sum, s) => sum + setVolume(s.weight, s.reps), 0);
+  return sets.filter((s) => !s.isWarmup).reduce((sum, s) => sum + setVolume(s.weight, s.reps), 0);
 }

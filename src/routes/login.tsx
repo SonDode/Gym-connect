@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
 
+// Ruta de autentificare pentru utilizatori existenți.
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
@@ -17,6 +18,9 @@ export const Route = createFileRoute("/login")({
   component: LoginPage,
 });
 
+/**
+ * Formularul de login: validare de bază, feedback și redirect după autentificare.
+ */
 function LoginPage() {
   const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -29,6 +33,7 @@ function LoginPage() {
     if (isAuthenticated) navigate({ to: "/dashboard" });
   }, [isAuthenticated, navigate]);
 
+  // Procesează trimiterea formularului și tratează erorile de autentificare.
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
@@ -59,12 +64,8 @@ function LoginPage() {
       <main className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-md flex-col justify-center px-6 py-12">
         <div className="rounded-2xl border border-border bg-card p-8 shadow-card">
           <div className="text-center">
-            <h1 className="font-display text-3xl font-bold tracking-tight">
-              Bun venit înapoi
-            </h1>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Continuă-ți progresul.
-            </p>
+            <h1 className="font-display text-3xl font-bold tracking-tight">Bun venit înapoi</h1>
+            <p className="mt-2 text-sm text-muted-foreground">Continuă-ți progresul.</p>
           </div>
 
           <form onSubmit={onSubmit} className="mt-8 space-y-5">
@@ -85,10 +86,7 @@ function LoginPage() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Parolă</Label>
-                <button
-                  type="button"
-                  className="text-xs text-muted-foreground hover:text-primary"
-                >
+                <button type="button" className="text-xs text-muted-foreground hover:text-primary">
                   Ai uitat parola?
                 </button>
               </div>
@@ -120,11 +118,7 @@ function LoginPage() {
               className="h-11 w-full text-base font-semibold"
               disabled={submitting}
             >
-              {submitting ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                "Autentificare"
-              )}
+              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Autentificare"}
             </Button>
           </form>
 

@@ -1,10 +1,4 @@
-import {
-  createFileRoute,
-  Outlet,
-  redirect,
-  Link,
-  useRouterState,
-} from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, Link, useRouterState } from "@tanstack/react-router";
 import { Dumbbell, LogOut, Play, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
@@ -58,16 +52,11 @@ function DashboardShell() {
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-primary">
               <Dumbbell className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="hidden font-display text-lg font-bold sm:inline">
-              Gym-Connect
-            </span>
+            <span className="hidden font-display text-lg font-bold sm:inline">Gym-Connect</span>
           </Link>
 
           <Link to="/dashboard/workout" className="flex-1 md:flex-initial">
-            <Button
-              size="default"
-              className="w-full font-semibold shadow-glow md:w-auto"
-            >
+            <Button size="default" className="w-full font-semibold shadow-glow md:w-auto">
               <Play className="mr-2 h-4 w-4 fill-current" />
               {active ? "Continuă antrenamentul" : "Începe antrenament"}
             </Button>
@@ -104,9 +93,7 @@ function DashboardShell() {
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <nav className="-mb-px flex gap-1 overflow-x-auto">
             {tabs.map((tab) => {
-              const isActive = tab.exact
-                ? pathname === tab.to
-                : pathname.startsWith(tab.to);
+              const isActive = tab.exact ? pathname === tab.to : pathname.startsWith(tab.to);
               return (
                 <Link
                   key={tab.to}

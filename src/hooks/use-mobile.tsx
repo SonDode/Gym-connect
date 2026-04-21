@@ -2,6 +2,10 @@ import * as React from "react";
 
 const MOBILE_BREAKPOINT = 768;
 
+/**
+ * Detectează dacă viewport-ul curent este mobil (sub 768px).
+ * Returnează mereu boolean pentru consum simplu în componente.
+ */
 export function useIsMobile() {
   const [isMobile, setIsMobile] = React.useState<boolean | undefined>(undefined);
 

@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
 
+// Ruta de creare cont nou.
 export const Route = createFileRoute("/register")({
   head: () => ({
     meta: [
@@ -17,6 +18,9 @@ export const Route = createFileRoute("/register")({
   component: RegisterPage,
 });
 
+/**
+ * Formularul de înregistrare cu validare minimă și redirect automat după succes.
+ */
 function RegisterPage() {
   const { register, isAuthenticated } = useAuth();
   const navigate = useNavigate();
@@ -31,6 +35,7 @@ function RegisterPage() {
     if (isAuthenticated) navigate({ to: "/dashboard" });
   }, [isAuthenticated, navigate]);
 
+  // Procesează înregistrarea, verifică potrivirea parolelor și tratează erorile.
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirm) {
@@ -65,9 +70,7 @@ function RegisterPage() {
       <main className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-md flex-col justify-center px-6 py-12">
         <div className="rounded-2xl border border-border bg-card p-8 shadow-card">
           <div className="text-center">
-            <h1 className="font-display text-3xl font-bold tracking-tight">
-              Creează-ți contul
-            </h1>
+            <h1 className="font-display text-3xl font-bold tracking-tight">Creează-ți contul</h1>
             <p className="mt-2 text-sm text-muted-foreground">
               Începe să-ți măsori progresul în mai puțin de 30 secunde.
             </p>
@@ -147,11 +150,7 @@ function RegisterPage() {
               className="h-11 w-full text-base font-semibold"
               disabled={submitting}
             >
-              {submitting ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                "Creează cont"
-              )}
+              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Creează cont"}
             </Button>
           </form>
 

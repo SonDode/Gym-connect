@@ -143,7 +143,12 @@
     background-attachment: fixed;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }
@@ -198,7 +203,9 @@
   }
 
   .ring-glow {
-    box-shadow: 0 0 0 1px oklch(0.86 0.22 130 / 0.4), 0 0 30px -8px oklch(0.86 0.22 130 / 0.5);
+    box-shadow:
+      0 0 0 1px oklch(0.86 0.22 130 / 0.4),
+      0 0 30px -8px oklch(0.86 0.22 130 / 0.5);
   }
 
   .grid-pattern {
@@ -210,8 +217,13 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 30px -10px oklch(0.86 0.22 130 / 0.4); }
-  50% { box-shadow: 0 0 50px -5px oklch(0.86 0.22 130 / 0.7); }
+  0%,
+  100% {
+    box-shadow: 0 0 30px -10px oklch(0.86 0.22 130 / 0.4);
+  }
+  50% {
+    box-shadow: 0 0 50px -5px oklch(0.86 0.22 130 / 0.7);
+  }
 }
 
 .animate-pulse-glow {

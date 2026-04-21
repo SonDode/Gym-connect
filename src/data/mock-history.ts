@@ -100,6 +100,10 @@ const BASE_WEIGHTS: Record<string, { weight: number; reps: number }> = {
   "ex-standing-calf": { weight: 80, reps: 14 },
 };
 
+/**
+ * Generator pseudo-random determinist pe baza unui seed numeric.
+ * Este folosit ca rezultatele mock să fie reproductibile între rulări.
+ */
 function rng(seed: number) {
   let s = seed;
   return () => {
@@ -108,11 +112,15 @@ function rng(seed: number) {
   };
 }
 
+/**
+ * Construiește o sesiune mock completă pentru un split și un moment în timp.
+ * Include progres săptămânal, oboseală intra-set și seturi de încălzire pentru exerciții grele.
+ */
 function generateSession(
   split: SplitTemplate,
   weekIndex: number,
   daysAgo: number,
-  seed: number
+  seed: number,
 ): WorkoutSession {
   const rand = rng(seed);
   const sets: WorkoutSet[] = [];
@@ -126,10 +134,7 @@ function generateSession(
     const baseWeight = base.weight * progressFactor;
 
     // Round la 2.5 kg
-    const workWeight = Math.max(
-      base.weight * 0.5,
-      Math.round((baseWeight * 2) / 5) * 2.5
-    );
+    const workWeight = Math.max(base.weight * 0.5, Math.round((baseWeight * 2) / 5) * 2.5);
 
     // 1-2 încălziri pentru exerciții compuse cu greutate > 40
     const isHeavy = workWeight >= 40;
@@ -177,6 +182,10 @@ function generateSession(
   };
 }
 
+/**
+ * Generează întreg istoricul demo (6 săptămâni x 3 sesiuni/săptămână).
+ * Rezultatul final este sortat cu cele mai recente sesiuni primele.
+ */
 export function generateMockHistory(): WorkoutSession[] {
   // 6 săptămâni × 3 antrenamente / săpt. = 18 sesiuni
   const sessions: WorkoutSession[] = [];
@@ -190,15 +199,11 @@ export function generateMockHistory(): WorkoutSession[] {
       { split: DEFAULT_SPLITS[2], offset: 2 }, // Legs
     ];
     for (const { split, offset } of order) {
-      sessions.push(
-        generateSession(split, week, weekStartDaysAgo + offset, seed++)
-      );
+      sessions.push(generateSession(split, week, weekStartDaysAgo + offset, seed++));
     }
   }
   // Cele mai noi întâi
-  return sessions.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  return sessions.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 // Verifică că toate ID-urile referite există în librărie
