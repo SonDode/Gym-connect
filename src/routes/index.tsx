@@ -46,7 +46,7 @@ function LandingPage() {
               <Dumbbell className="h-5 w-5 text-primary-foreground" />
             </div>
             <span className="font-display text-xl font-bold tracking-tight">
-              ForceLab
+              Gym-Connect
             </span>
           </Link>
           <div className="flex items-center gap-2">
