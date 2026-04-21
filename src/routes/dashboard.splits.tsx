@@ -36,7 +36,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/dashboard/splits")({
-  head: () => ({ meta: [{ title: "Rutine — ForceLab" }] }),
+  head: () => ({ meta: [{ title: "Rutine — Gym-Connect" }] }),
   component: SplitsPage,
 });
 

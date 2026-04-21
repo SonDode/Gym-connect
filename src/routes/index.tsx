@@ -17,13 +17,13 @@ import { useAuth } from "@/lib/auth";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ForceLab — Antrenament inteligent de forță" },
+      { title: "Gym-Connect — Antrenament inteligent de forță" },
       {
         name: "description",
         content:
           "Predicție 1RM, monitorizare RIR și grafice de progres bazate pe regresie liniară. Sport-science în buzunarul tău.",
       },
-      { property: "og:title", content: "ForceLab — Antrenament inteligent" },
+      { property: "og:title", content: "Gym-Connect — Antrenament inteligent" },
       {
         property: "og:description",
         content: "Sport science complet pentru sportivii care vor progres real.",
@@ -46,7 +46,7 @@ function LandingPage() {
               <Dumbbell className="h-5 w-5 text-primary-foreground" />
             </div>
             <span className="font-display text-xl font-bold tracking-tight">
-              ForceLab
+              Gym-Connect
             </span>
           </Link>
           <div className="flex items-center gap-2">
@@ -95,7 +95,7 @@ function LandingPage() {
               Doar progres măsurabil.
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
-              ForceLab îți transformă fiecare serie într-un punct de date.
+              Gym-Connect îți transformă fiecare serie într-un punct de date.
               Predicție 1RM, monitorizare RIR și grafice de regresie liniară —
               construite pentru sportivi serioși care vor să elimine stagnarea.
             </p>
@@ -223,7 +223,7 @@ function LandingPage() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 text-sm text-muted-foreground md:flex-row">
           <div className="flex items-center gap-2">
             <Dumbbell className="h-4 w-4" />
-            <span>© {new Date().getFullYear()} ForceLab</span>
+            <span>© {new Date().getFullYear()} Gym-Connect</span>
           </div>
           <div className="flex gap-6">
             <a href="#" className="hover:text-foreground">Termeni</a>

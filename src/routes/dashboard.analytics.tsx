@@ -28,7 +28,7 @@ import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 
 export const Route = createFileRoute("/dashboard/analytics")({
-  head: () => ({ meta: [{ title: "Analize — ForceLab" }] }),
+  head: () => ({ meta: [{ title: "Analize — Gym-Connect" }] }),
   component: AnalyticsPage,
 });
 

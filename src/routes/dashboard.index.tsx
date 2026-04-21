@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 
 export const Route = createFileRoute("/dashboard/")({
-  head: () => ({ meta: [{ title: "Istoric — ForceLab" }] }),
+  head: () => ({ meta: [{ title: "Istoric — Gym-Connect" }] }),
   component: HistoryPage,
 });
 

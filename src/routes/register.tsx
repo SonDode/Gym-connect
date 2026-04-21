@@ -10,8 +10,8 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/register")({
   head: () => ({
     meta: [
-      { title: "Înregistrare — ForceLab" },
-      { name: "description", content: "Creează un cont ForceLab gratuit." },
+      { title: "Înregistrare — Gym-Connect" },
+      { name: "description", content: "Creează un cont Gym-Connect gratuit." },
     ],
   }),
   component: RegisterPage,
@@ -57,7 +57,7 @@ function RegisterPage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-primary">
               <Dumbbell className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="font-display text-xl font-bold">ForceLab</span>
+            <span className="font-display text-xl font-bold">Gym-Connect</span>
           </Link>
         </div>
       </header>

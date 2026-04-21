@@ -31,14 +31,14 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ForceLab — Antrenament inteligent de forță" },
+      { title: "Gym-Connect — Antrenament inteligent de forță" },
       {
         name: "description",
         content:
           "Platformă de monitorizare a antrenamentelor de forță cu predicție 1RM, RIR și supraîncărcare progresivă bazată pe știință.",
       },
-      { name: "author", content: "ForceLab" },
-      { property: "og:title", content: "ForceLab — Antrenament inteligent de forță" },
+      { name: "author", content: "Gym-Connect" },
+      { property: "og:title", content: "Gym-Connect — Antrenament inteligent de forță" },
       {
         property: "og:description",
         content: "Predicție 1RM, RIR și grafice de performanță pentru sportivi serioși.",

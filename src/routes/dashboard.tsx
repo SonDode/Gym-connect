@@ -59,7 +59,7 @@ function DashboardShell() {
               <Dumbbell className="h-5 w-5 text-primary-foreground" />
             </div>
             <span className="hidden font-display text-lg font-bold sm:inline">
-              ForceLab
+              Gym-Connect
             </span>
           </Link>
 
