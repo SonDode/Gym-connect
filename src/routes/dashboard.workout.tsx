@@ -21,7 +21,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useWorkout } from "@/lib/workout-context";
-import { useSplits } from "@/lib/store";
+import { useSplits, useSessions } from "@/lib/store";
 import { getExerciseById } from "@/data/exercises";
 import { calculatePlates, predict1RM, setVolume } from "@/lib/strength-math";
 import { toast } from "sonner";
@@ -38,7 +38,7 @@ function WorkoutPage() {
   const { splits } = useSplits();
   const [elapsed, setElapsed] = useState(0);
   const { startWorkout } = useWorkout();
-  const { sessions } = useSessionsLazy();
+  const { sessions } = useSessions();
 
   useEffect(() => {
     if (!active) return;
@@ -445,9 +445,5 @@ function formatTime(seconds: number): string {
   return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
 }
 
-// Hook lazy ca să evităm un cycle de import
-function useSessionsLazy() {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const { useSessions } = require("@/lib/store") as typeof import("@/lib/store");
-  return useSessions();
-}
+
+
