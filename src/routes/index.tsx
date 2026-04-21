@@ -95,7 +95,7 @@ function LandingPage() {
               Doar progres măsurabil.
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
-              ForceLab îți transformă fiecare serie într-un punct de date.
+              Gym-Connect îți transformă fiecare serie într-un punct de date.
               Predicție 1RM, monitorizare RIR și grafice de regresie liniară —
               construite pentru sportivi serioși care vor să elimine stagnarea.
             </p>
