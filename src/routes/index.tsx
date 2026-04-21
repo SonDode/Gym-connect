@@ -17,13 +17,13 @@ import { useAuth } from "@/lib/auth";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ForceLab — Antrenament inteligent de forță" },
+      { title: "Gym-Connect — Antrenament inteligent de forță" },
       {
         name: "description",
         content:
           "Predicție 1RM, monitorizare RIR și grafice de progres bazate pe regresie liniară. Sport-science în buzunarul tău.",
       },
-      { property: "og:title", content: "ForceLab — Antrenament inteligent" },
+      { property: "og:title", content: "Gym-Connect — Antrenament inteligent" },
       {
         property: "og:description",
         content: "Sport science complet pentru sportivii care vor progres real.",
