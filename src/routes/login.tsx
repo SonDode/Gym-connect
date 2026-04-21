@@ -10,8 +10,8 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
-      { title: "Autentificare — ForceLab" },
-      { name: "description", content: "Accesează contul ForceLab." },
+      { title: "Autentificare — Gym-Connect" },
+      { name: "description", content: "Accesează contul Gym-Connect." },
     ],
   }),
   component: LoginPage,
