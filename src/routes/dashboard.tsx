@@ -43,11 +43,11 @@ function DashboardShell() {
   const { active } = useWorkout();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
-  const tabs = [
+  const tabs: Array<{ to: string; label: string; exact?: boolean }> = [
     { to: "/dashboard", label: "Istoric", exact: true },
     { to: "/dashboard/splits", label: "Rutine" },
     { to: "/dashboard/analytics", label: "Analize" },
-  ] as const;
+  ];
 
   return (
     <div className="min-h-screen bg-background">

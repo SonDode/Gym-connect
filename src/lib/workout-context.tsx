@@ -174,7 +174,7 @@ export function WorkoutProvider({ children }: { children: ReactNode }) {
               exerciseId: sx.exerciseId,
               setOrder: i,
               weight: prev?.weight ?? 20,
-              reps: prev?.reps ?? Number(sx.targetRepRange.split("-")[0]) || 8,
+              reps: prev?.reps ?? (Number(sx.targetRepRange.split("-")[0]) || 8),
               rir: 2,
               isWarmup: false,
               completed: false,
