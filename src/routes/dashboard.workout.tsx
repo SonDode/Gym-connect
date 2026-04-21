@@ -27,7 +27,7 @@ import { calculatePlates, predict1RM, setVolume } from "@/lib/strength-math";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/dashboard/workout")({
-  head: () => ({ meta: [{ title: "Antrenament — ForceLab" }] }),
+  head: () => ({ meta: [{ title: "Antrenament — Gym-Connect" }] }),
   component: WorkoutPage,
 });
 
