@@ -1,4 +1,4 @@
-# Gym-Connect (Peak Performance Tracker)
+# Gym-Connect
 
 Aplicație web pentru monitorizarea antrenamentelor de forță, cu focus pe progres măsurabil: seturi, reps, greutăți, RIR, volum și estimare 1RM.
 
