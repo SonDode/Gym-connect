@@ -1,141 +1,267 @@
-# Gym-Connect
+# 🏋️ Gym-Connect
 
-Aplicație web pentru monitorizarea antrenamentelor de forță, cu focus pe progres măsurabil: seturi, reps, greutăți, RIR, volum și estimare 1RM.
+Aplicație web modernă pentru monitorizarea și gestionarea antrenamentelor de forță, cu focus pe progres măsurabil, analytics avansate și UX optimal.
 
-## Tehnologii folosite
+## 🚀 Despre proiect
 
-- `React 19` + `TypeScript`
-- `TanStack Router` + `TanStack Start`
-- `Vite` pentru dezvoltare/build
-- `Tailwind CSS` + componente UI bazate pe `Radix UI`
-- `ESLint` + `Prettier` pentru calitatea codului
-- `localStorage` pentru persistență locală (mock data, auth, sesiuni)
+Gym-Connect te ajută să:
+- Organizezi antrenamentele prin **split-uri personalizate**
+- Urmărești fiecare set cu detalii (greutate, reps, RIR, volum)
+- Vezi **analytics în timp real** (predicție 1RM, trend forță, evoluție volum)
+- Calculezi discurile automat
+- Păstrezi un istoric complet al sesiunilor
 
-## Funcționalități (opționalități) implementate
+## 🛠️ Tehnologii
 
-- Autentificare mock (`login/register/logout`) cu persistență locală
-- Landing page public + dashboard privat
-- Gestionare split-uri de antrenament
-  - creare/actualizare/ștergere split
-  - bibliotecă de exerciții predefinită
-- Sesiune de workout activă
-  - pornire workout din split
-  - editare serii (greutate, reps, RIR)
-  - adăugare/ștergere serie
-  - marcare serie finalizată
-  - timer antrenament + smart rest timer
-  - calculator discuri pentru bară
-- Analytics
-  - predicție 1RM
-  - volum total
-  - trend de progres (regresie liniară)
-- Date mock realiste pentru demo/testing
+| Categoria | Tehnologie |
+|-----------|-----------|
+| **Framework** | React 19 + TypeScript |
+| **Rutare** | TanStack Router + TanStack Start |
+| **Build** | Vite |
+| **Styling** | Tailwind CSS 4 |
+| **UI Components** | Radix UI + Custom |
+| **Forms** | React Hook Form + Zod |
+| **Charts** | Recharts |
+| **State Management** | Context API + localStorage |
+| **Code Quality** | ESLint |
+| **Deployment** | Cloudflare Pages (via Wrangler) |
 
-## Logica aplicației pe scurt
+## ✨ Funcționalități
 
-1. **Datele de bază** vin din fișierele din `src/data`:
-   - `exercises.ts`: catalogul de exerciții
-   - `mock-history.ts`: split-uri default + istoric mock
-2. **Persistența locală** este gestionată în `src/lib/store.ts`:
-   - split-uri custom
-   - sesiuni salvate
-3. **Workout-ul activ** este gestionat prin context în `src/lib/workout-context.tsx`:
-   - state live al sesiunii curente
-   - operații pe seturi
-   - finalizare/cancel
-4. **Auth mock** este gestionat în `src/lib/auth.tsx`.
-5. **Rutele/paginile** sunt în `src/routes`:
-   - public: `/`, `/login`, `/register`
-   - privat: `/dashboard` și subpaginile lui
+### Autentificare & Useri
+- ✅ Sistem mock de autentificare (login/register/logout)
+- ✅ Persistență cont cu localStorage
+- ✅ Protecție rute (private/public)
 
-## Ghid de utilizare a aplicației
+### Gestionare Split-uri
+- ✅ Creare/editare/ștergere split-uri
+- ✅ Bibliotecă completă de exerciții (80+ exerciții)
+- ✅ Atribuire exerciții pe grupuri musculare
+- ✅ Salvare split-uri favorite
 
-### 1) Înregistrare / autentificare
+### Sesiuni Workout
+- ✅ Pornire workout din split cu auto-populare
+- ✅ Editare set-uri în timp real (greutate, reps, RIR)
+- ✅ Adăugare/ștergere serii dinamice
+- ✅ Marcare serie finalizată
+- ✅ Timer antrenament + smart rest timer
+- ✅ Calculator discuri pentru bară (plate loading)
+- ✅ Salvare automată sesiuni în istoric
 
-- Intră pe pagina de start.
-- Creează cont nou din `Register` sau autentifică-te din `Login`.
+### Analytics & Insights
+- ✅ Estimare 1RM (usando Epley/Brzycki)
+- ✅ Calculul volumului total pe exercițiu
+- ✅ Trend progres (regresie liniară)
+- ✅ Grafice interactive (Recharts)
+- ✅ Istoric sesiuni complet
 
-### 2) Începe un antrenament
+### UX & Design
+- ✅ Interfață responsivă (mobile-first)
+- ✅ Dark mode integrat
+- ✅ Animații fluide (Framer Motion)
+- ✅ Toast notifications (Sonner)
+- ✅ Componente UI polite (Radix UI)
 
-- Intră în `Dashboard`.
-- Deschide pagina de workout.
-- Alege un split existent sau creează unul nou în secțiunea de split-uri.
+## 📁 Structură Proiect
 
-### 3) Lucrează seturile
-
-- Pentru fiecare exercițiu:
-  - ajustează greutatea
-  - setează reps (1-100)
-  - alege RIR
-  - bifează seria ca finalizată
-- Poți adăuga/șterge serii în timp real.
-- La completare, aplicația pornește automat timer de pauză.
-
-### 4) Finalizează sesiunea
-
-- Apasă `Finalizează antrenamentul`.
-- Sesiunea este salvată în istoric.
-
-### 5) Vezi analytics
-
-- Intră în pagina de analytics din dashboard pentru:
-  - trend forță
-  - estimări 1RM
-  - volume și evoluție în timp
-
-## Cum rulezi codul local
-
-## Cerințe
-
-- `Node.js` 18+ (recomandat 20+)
-- `npm`
-
-### Instalare dependențe
-
-```bash
-npm install
+```
+gym-connect/
+├── src/
+│   ├── routes/              # Pagini aplicației
+│   │   ├── __root.tsx       # Layout global
+│   │   ├── index.tsx        # Landing page public
+│   │   ├── login.tsx        # Pagina login
+│   │   ├── register.tsx     # Pagina register
+│   │   ├── dashboard.tsx    # Layout dashboard
+│   │   ├── dashboard.index.tsx      # Dashboard home
+│   │   ├── dashboard.splits.tsx     # Gestionare split-uri
+│   │   ├── dashboard.workout.tsx    # Sesiune workout
+│   │   └── dashboard.analytics.tsx  # Analytics & insights
+│   │
+│   ├── components/
+│   │   └── ui/              # 40+ componente UI reutilizabile (Radix)
+│   │
+│   ├── lib/
+│   │   ├── auth.tsx         # Logica autentificare (mock)
+│   │   ├── store.ts         # Persistență localStorage
+│   │   ├── workout-context.tsx  # Context workout global
+│   │   ├── strength-math.ts     # Calcule 1RM, volum, trend
+│   │   ├── api.functions.ts     # Helper funcții (gata pentru backend)
+│   │   └── utils.ts         # Utilitare generale
+│   │
+│   ├── data/
+│   │   ├── exercises.ts     # 80+ exerciții (cu grupuri musculare)
+│   │   └── mock-history.ts  # Date demo pentru testing
+│   │
+│   ├── hooks/
+│   │   └── use-mobile.tsx   # Hook responsive
+│   │
+│   ├── router.tsx           # Configurare TanStack Router
+│   ├── routeTree.gen.ts     # Generated (auto)
+│   └── styles.css           # Global styles
+│
+├── tsconfig.json            # TypeScript config
+├── vite.config.ts           # Vite config
+├── tailwind.config.js       # Tailwind config
+├── eslint.config.js         # ESLint rules
+├── wrangler.jsonc           # Cloudflare Pages config
+├── components.json          # shadcn/ui config
+└── package.json
 ```
 
-### Rulare în development
+## 📖 Ghid de Utilizare
+
+### 1️⃣ Înregistrare & Autentificare
+```
+Landing Page → "Sign Up" → Completează form → Intră în Dashboard
+SAU
+Login → Credentials demo → Intră în Dashboard
+```
+
+### 2️⃣ Creare Split
+- Mergi la **Split-uri**
+- Click "Crează Split Nou"
+- Adaug exerciții din bibliotecă
+- Salvează split
+
+### 3️⃣ Pornire Workout
+- Mergi la **Workout**
+- Alege split din lista
+- Click "Pornește Sesiune"
+- Aplicația auto-populează exercițiile
+
+### 4️⃣ Execuție Sesiune
+```
+Pentru fiecare exercițiu:
+1. Setează greutate (kg)
+2. Setează reps (1-100)
+3. Alege RIR (0-10)
+4. Bifează "Set complet" 
+5. (Opțional) Adaug set suplimentar
+6. Timer rest pornește automat
+```
+
+### 5️⃣ Analytics
+- Mergi la **Analytics**
+- Vezi grafice:
+  - 📈 Trend forță pe exercițiu
+  - 💪 Estimări 1RM
+  - 📊 Volum total / sesiune
+  - 📉 Evoluție progres
+
+## ⚙️ Setup Local
+
+### Prerequisite
+- **Node.js** 18+ (recomandat 20+)
+- **npm** sau **yarn**
+
+### Instalare & Pornire
 
 ```bash
+# Clonare repo
+git clone https://github.com/SonDode/Gym-connect.git
+cd gym-connect
+
+# Instalare dependențe
+npm install
+
+# Rulare development server (http://localhost:8080)
 npm run dev
 ```
 
-Aplicația pornește, de regulă, pe [http://localhost:8080](http://localhost:8080).
-
-### Build de producție
+### Build Producție
 
 ```bash
+# Build optimizat
 npm run build
-```
 
-### Preview build
-
-```bash
+# Preview build local
 npm run preview
 ```
 
-### Verificare cod
+### Alte Comenzi
 
 ```bash
+# Verificare cod (ESLint)
 npm run lint
+
+# Deploy pe Cloudflare Pages
+npm run deploy  # (via wrangler)
 ```
 
-### Formatare cod
+## 🧩 Componente UI
 
-```bash
-npm run format
+Aplicația folosește **40+ componente reutilizabile** din Radix UI, personalizate cu Tailwind CSS:
+
+- **Form Components**: Input, Checkbox, RadioGroup, Select, Textarea, Toggle, Switch
+- **Data Display**: Table, Card, Badge, Progress, Skeleton, Chart
+- **Navigation**: Sidebar, Tabs, Breadcrumb, Pagination, NavigationMenu
+- **Dialogs & Overlays**: Dialog, Alert Dialog, Drawer, Popover, DropdownMenu, ContextMenu
+- **Feedback**: Toast (Sonner), HoverCard, Tooltip
+- **Utility**: Separator, AspectRatio, ScrollArea, ResizablePanels, Carousel
+
+## 💾 Persistență & Storage
+
+Aplicația folosește **localStorage** pentru:
+```javascript
+// Format exemplu
+localStorage['gym-connect-user']      // Auth session
+localStorage['gym-connect-splits']    // Split-uri salvate
+localStorage['gym-connect-sessions']  // Istoric workout
 ```
 
-## Structură proiect (rezumat)
+## 🔗 Flow-ul Datelor
 
-- `src/routes` - pagini și navigație
-- `src/components` - componente UI
-- `src/lib` - logică aplicație (auth, store, workout, math)
-- `src/data` - date mock și modele
+```
+┌─────────────────────────────────┐
+│  UI Components (React)          │
+└─────────────────┬───────────────┘
+                  │
+┌─────────────────▼───────────────┐
+│  Context API (WorkoutContext)   │  
+│  State management               │
+└─────────────────┬───────────────┘
+                  │
+┌─────────────────▼───────────────┐
+│  Store Layer (localStorage)     │
+│  Persistență datelor            │
+└─────────────────┬───────────────┘
+                  │
+┌─────────────────▼───────────────┐
+│  Mock Data & API Layer          │
+│  Gata pentru backend real       │
+└─────────────────────────────────┘
+```
 
-## Observații
+## 🚀 Roadmap & Viitoare Optimizări
 
-- În starea actuală, aplicația folosește date locale/mock.
-- Arhitectura este pregătită pentru migrare către backend real (ex: Supabase) prin înlocuirea layer-ului de date.
+- [ ] Backend real (Node.js/Express)
+- [ ] Cloud sync (Firebase/Supabase)
+- [ ] Mobile app (React Native/Flutter)
+- [ ] PWA (offline mode)
+- [ ] Wearable integration
+- [ ] Social features (share, compare)
+- [ ] Export PDF/CSV
+- [ ] Advanced filtering/search
+
+## 📝 Note Importante
+
+- **Database**: Momentan mock în localStorage; ușor migrabil la orice backend
+- **Autentificare**: Setup mock; ready for OAuth2/JWT integration
+- **Calcule**: Validated și tested (Epley, Brzycki formule)
+- **Responsive**: Tested și optimizat pentru mobile, tablet, desktop
+- **Performance**: Optimizat cu Vite, code splitting, lazy loading
+
+## 🐛 Debugging & Support
+
+- Verifică **ESLint** errors: `npm run lint`
+- Clear localStorage: `localStorage.clear()` în DevTools
+- Check error logs în **Console**
+- Încearcă **hard refresh** (Ctrl+Shift+R)
+
+---
+
+**Status**: 🟢 **Active Development**  
+**Ultima actualizare**: Mai 2026  
+**Autor**: [SonDode](https://github.com/SonDode)  
+**Repository**: [github.com/SonDode/Gym-connect](https://github.com/SonDode/Gym-connect)
