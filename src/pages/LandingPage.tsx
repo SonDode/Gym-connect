@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Activity,
@@ -12,33 +12,10 @@ import {
   Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/lib/auth";
+import { useAuth } from "@clerk/react";
 
-// Ruta de landing publică a aplicației.
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Gym-Connect — Antrenament inteligent de forță" },
-      {
-        name: "description",
-        content:
-          "Predicție 1RM, monitorizare RIR și grafice de progres bazate pe regresie liniară. Sport-science în buzunarul tău.",
-      },
-      { property: "og:title", content: "Gym-Connect — Antrenament inteligent" },
-      {
-        property: "og:description",
-        content: "Sport science complet pentru sportivii care vor progres real.",
-      },
-    ],
-  }),
-  component: LandingPage,
-});
-
-/**
- * Pagina de prezentare (marketing) cu CTA către autentificare/dashboard.
- */
-function LandingPage() {
-  const { isAuthenticated } = useAuth();
+export function LandingPage() {
+  const { isSignedIn: isAuthenticated } = useAuth();
 
   return (
     <div className="min-h-screen bg-background text-foreground">

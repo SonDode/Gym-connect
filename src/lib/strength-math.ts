@@ -55,6 +55,7 @@ export function effectiveReps(reps: number, rir: number): number {
  * Trimitem (weight, reps_completate, RIR).
  */
 export function predict1RM(weight: number, reps: number, rir: number): number {
+  if (weight <= 0 || reps <= 0) return 0;
   const effR = effectiveReps(reps, rir);
   const a = brzycki(weight, effR);
   const b = epley(weight, effR);

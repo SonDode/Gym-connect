@@ -1,8 +1,7 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
   Check,
-  ChevronDown,
   Minus,
   Play,
   Plus,
@@ -15,28 +14,30 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useWorkout } from "@/lib/workout-context";
-import { useSplits, useSessions } from "@/lib/store";
+import { useSplits } from "@/hooks/use-splits";
+import { useSessions } from "@/hooks/use-sessions";
 import { getExerciseById } from "@/data/exercises";
-import { calculatePlates, predict1RM, setVolume } from "@/lib/strength-math";
+import { calculatePlates, predict1RM } from "@/lib/strength-math";
 import { toast } from "sonner";
 
-// Ruta principală pentru fluxul de antrenament activ.
-export const Route = createFileRoute("/dashboard/workout")({
-  head: () => ({ meta: [{ title: "Antrenament — Gym-Connect" }] }),
-  component: WorkoutPage,
-});
-
-/**
- * Ecranul complet de workout: picker de split, timer live, editare seturi și finalizare.
- */
-function WorkoutPage() {
-  const { active, finishWorkout, cancelWorkout, restRemaining, stopRest } = useWorkout();
+export function WorkoutPage() {
+  const { active, finishWorkout, cancelWorkout, startWorkout, restRemaining, stopRest } = useWorkout();
   const navigate = useNavigate();
   const { splits } = useSplits();
-  const [elapsed, setElapsed] = useState(0);
-  const { startWorkout } = useWorkout();
   const { sessions } = useSessions();
+  const [elapsed, setElapsed] = useState(0);
+  const [cancelOpen, setCancelOpen] = useState(false);
 
   useEffect(() => {
     if (!active) return;
@@ -47,7 +48,6 @@ function WorkoutPage() {
   }, [active]);
 
   if (!active) {
-    // Picker pentru split
     return (
       <div className="space-y-6">
         <div>
@@ -89,7 +89,6 @@ function WorkoutPage() {
     );
   }
 
-  // Grupare seturi pe exercițiu
   const groups = new Map<string, typeof active.sets>();
   active.sets.forEach((s) => {
     const arr = groups.get(s.exerciseId) ?? [];
@@ -117,16 +116,7 @@ function WorkoutPage() {
               <span className="font-mono font-bold text-primary">{completedCount}</span>
               <span className="text-muted-foreground">/{totalCount}</span>
             </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => {
-                if (confirm("Renunți la antrenament fără să-l salvezi?")) {
-                  cancelWorkout();
-                  navigate({ to: "/dashboard" });
-                }
-              }}
-            >
+            <Button variant="ghost" size="sm" onClick={() => setCancelOpen(true)}>
               <X className="h-4 w-4" />
             </Button>
           </div>
@@ -158,7 +148,7 @@ function WorkoutPage() {
             onClick={() => {
               finishWorkout();
               toast.success("Antrenament salvat!");
-              navigate({ to: "/dashboard" });
+              navigate("/dashboard");
             }}
             className="h-12 w-full text-base font-semibold"
             disabled={completedCount === 0}
@@ -168,13 +158,34 @@ function WorkoutPage() {
           </Button>
         </div>
       </div>
+
+      {/* Dialog confirmare anulare */}
+      <AlertDialog open={cancelOpen} onOpenChange={setCancelOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Renunți la antrenament?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Progresul curent nu va fi salvat.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Continuă antrenamentul</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                cancelWorkout();
+                navigate("/dashboard");
+              }}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Renunță
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
 
-/**
- * Grup logic/visual pentru toate seriile unui exercițiu.
- */
 function ExerciseBlock({
   exerciseId,
   sets,
@@ -213,7 +224,6 @@ function ExerciseBlock({
             onComplete={() => {
               toggleComplete(s.id);
               if (!s.completed) {
-                // Smart rest timer (90s default, 180s pentru compounds grei)
                 const isHeavy = ex.isCompound && s.weight >= 60;
                 startRest(isHeavy ? 180 : 90);
               }
@@ -238,9 +248,6 @@ function ExerciseBlock({
   );
 }
 
-/**
- * Rând editabil pentru o serie individuală (greutate, reps, RIR, acțiuni).
- */
 function SetRow({
   set,
   index,
@@ -263,7 +270,6 @@ function SetRow({
   onRemove: () => void;
   onOpenCalc: () => void;
 }) {
-  // Normalizează reps la intervalul permis în UI: 1..100.
   const clampReps = (value: number) => Math.min(100, Math.max(1, Math.round(value)));
   const rm = predict1RM(set.weight, set.reps, set.rir);
 
@@ -277,7 +283,6 @@ function SetRow({
         {set.isWarmup ? "W" : index + 1}
       </div>
 
-      {/* Weight */}
       <div className="flex items-center gap-1">
         <button
           onClick={() => onUpdate({ weight: Math.max(0, set.weight - 2.5) })}
@@ -300,7 +305,6 @@ function SetRow({
         </button>
       </div>
 
-      {/* Reps */}
       <div className="flex items-center gap-1">
         <button
           onClick={() => onUpdate({ reps: clampReps(set.reps - 1) })}
@@ -326,7 +330,6 @@ function SetRow({
         </button>
       </div>
 
-      {/* RIR */}
       <select
         value={set.rir}
         onChange={(e) => onUpdate({ rir: Number(e.target.value) })}
@@ -340,9 +343,8 @@ function SetRow({
         ))}
       </select>
 
-      {/* RM hint */}
       {!set.isWarmup && rm > 0 && (
-        <div className="hidden text-xs text-primary md:block" title={`1RM estimat (Brzycki+Epley)`}>
+        <div className="hidden text-xs text-primary md:block" title="1RM estimat (Brzycki+Epley)">
           ~{rm.toFixed(0)}
         </div>
       )}
@@ -376,9 +378,6 @@ function SetRow({
   );
 }
 
-/**
- * Dialog pentru calculul discurilor necesare pe fiecare parte a barei.
- */
 function PlateCalc({ weight, onClose }: { weight: number; onClose: () => void }) {
   const result = calculatePlates(weight);
   return (
@@ -426,9 +425,6 @@ function PlateCalc({ weight, onClose }: { weight: number; onClose: () => void })
   );
 }
 
-/**
- * Formatează secunde în format mm:ss pentru timer și pauză.
- */
 function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60);
   const s = seconds % 60;

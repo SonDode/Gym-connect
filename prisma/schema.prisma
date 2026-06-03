@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SplitTemplate {
+  id          String           @id @default(cuid())
+  userId      String
+  name        String
+  description String           @default("")
+  /// JSON: [{ exerciseId, targetSets, targetRepRange, order }]
+  exercises   Json
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  sessions    WorkoutSession[]
+
+  @@index([userId])
+}
+
+model WorkoutSession {
+  id              String          @id @default(cuid())
+  userId          String
+  splitId         String?
+  split           SplitTemplate?  @relation(fields: [splitId], references: [id], onDelete: SetNull)
+  splitName       String
+  date            DateTime
+  durationSeconds Int
+  notes           String?
+  sets            WorkoutSet[]
+  createdAt       DateTime        @default(now())
+
+  @@index([userId])
+  @@index([userId, date(sort: Desc)])
+}
+
+model WorkoutSet {
+  id         String         @id @default(cuid())
+  sessionId  String
+  session    WorkoutSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  exerciseId String
+  setOrder   Int
+  weight     Float
+  reps       Int
+  rir        Int
+  isWarmup   Boolean        @default(false)
+
+  @@index([sessionId])
+}

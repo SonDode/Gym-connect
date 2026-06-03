@@ -1,4 +1,3 @@
-import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
   LineChart,
@@ -14,18 +13,13 @@ import {
   Legend,
 } from "recharts";
 import { TrendingUp, Brain, Zap, AlertTriangle } from "lucide-react";
-import { useSessions } from "@/lib/store";
+import { useSessions } from "@/hooks/use-sessions";
 import { EXERCISE_LIBRARY, getExerciseById } from "@/data/exercises";
 import { predict1RM, linearRegression, sessionVolume } from "@/lib/strength-math";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
 
-export const Route = createFileRoute("/dashboard/analytics")({
-  head: () => ({ meta: [{ title: "Analize — Gym-Connect" }] }),
-  component: AnalyticsPage,
-});
-
-function AnalyticsPage() {
+export function AnalyticsPage() {
   const { sessions, loaded } = useSessions();
 
   // Exerciții care au date suficiente (compounds)

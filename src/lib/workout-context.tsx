@@ -10,8 +10,9 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { SplitTemplate, WorkoutSession, WorkoutSet } from "@/data/mock-history";
-import { useSessions } from "./store";
+import { toast } from "sonner";
+import type { SplitTemplate, WorkoutSession, WorkoutSet } from "@/types/workout";
+import { useSessions } from "@/hooks/use-sessions";
 
 type ActiveSet = {
   id: string;
@@ -224,7 +225,9 @@ export function WorkoutProvider({ children }: { children: ReactNode }) {
         isWarmup: s.isWarmup,
       })),
     };
-    addSession(session);
+    addSession(session).catch(() => {
+      toast.error("Eroare la salvarea antrenamentului. Încearcă din nou.");
+    });
     dispatch({ type: "RESET" });
   }, [active, addSession]);
 

@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Plus, Trash2, Dumbbell, Search, Play, ChevronDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,8 +12,8 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { useSplits } from "@/lib/store";
-import { useSessions } from "@/lib/store";
+import { useSplits } from "@/hooks/use-splits";
+import { useSessions } from "@/hooks/use-sessions";
 import {
   EXERCISE_LIBRARY,
   MUSCLE_GROUP_LABELS,
@@ -22,17 +22,11 @@ import {
   type MuscleGroup,
   type EquipmentType,
 } from "@/data/exercises";
-import type { SplitTemplate, SplitExercise } from "@/data/mock-history";
+import type { SplitTemplate, SplitExercise } from "@/types/workout";
 import { useWorkout } from "@/lib/workout-context";
-import { useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/dashboard/splits")({
-  head: () => ({ meta: [{ title: "Rutine — Gym-Connect" }] }),
-  component: SplitsPage,
-});
-
-function SplitsPage() {
+export function SplitsPage() {
   const { splits, upsertSplit, deleteSplit, loaded } = useSplits();
   const { sessions } = useSessions();
   const { startWorkout } = useWorkout();
@@ -44,7 +38,7 @@ function SplitsPage() {
   const handleStart = (split: SplitTemplate) => {
     const lastSession = sessions.find((s) => s.splitId === split.id);
     startWorkout(split, lastSession?.sets);
-    navigate({ to: "/dashboard/workout" });
+    navigate("/dashboard/workout");
     toast.success(`Antrenament început: ${split.name}`);
   };
 
@@ -76,7 +70,13 @@ function SplitsPage() {
             key={split.id}
             split={split}
             onEdit={() => setEditing(split)}
-            onDelete={() => deleteSplit(split.id)}
+            onDelete={async () => {
+              try {
+                await deleteSplit(split.id);
+              } catch {
+                toast.error("Eroare la ștergerea rutinei");
+              }
+            }}
             onStart={() => handleStart(split)}
           />
         ))}
@@ -86,10 +86,14 @@ function SplitsPage() {
         <SplitEditor
           split={editing}
           onClose={() => setEditing(null)}
-          onSave={(s) => {
-            upsertSplit(s);
-            setEditing(null);
-            toast.success("Rutină salvată");
+          onSave={async (s) => {
+            try {
+              await upsertSplit(s);
+              setEditing(null);
+              toast.success("Rutină salvată");
+            } catch {
+              toast.error("Eroare la salvarea rutinei");
+            }
           }}
         />
       )}
@@ -163,10 +167,11 @@ function SplitEditor({
 }: {
   split: SplitTemplate;
   onClose: () => void;
-  onSave: (s: SplitTemplate) => void;
+  onSave: (s: SplitTemplate) => Promise<void>;
 }) {
   const [draft, setDraft] = useState<SplitTemplate>(split);
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const addExercise = (exerciseId: string) => {
     if (draft.exercises.some((e) => e.exerciseId === exerciseId)) return;
@@ -288,10 +293,14 @@ function SplitEditor({
             Anulează
           </Button>
           <Button
-            onClick={() => onSave(draft)}
-            disabled={!draft.name.trim() || draft.exercises.length === 0}
+            onClick={async () => {
+              setSaving(true);
+              await onSave(draft);
+              setSaving(false);
+            }}
+            disabled={saving || !draft.name.trim() || draft.exercises.length === 0}
           >
-            Salvează
+            {saving ? "Se salvează..." : "Salvează"}
           </Button>
         </DialogFooter>
 

@@ -1,19 +1,14 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
 import { Calendar, Clock, Dumbbell, TrendingUp, Trophy } from "lucide-react";
 import { format } from "date-fns";
 import { ro } from "date-fns/locale";
-import { useSessions } from "@/lib/store";
+import { useSessions } from "@/hooks/use-sessions";
 import { getExerciseById } from "@/data/exercises";
 import { sessionVolume, predict1RM } from "@/lib/strength-math";
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 
-export const Route = createFileRoute("/dashboard/")({
-  head: () => ({ meta: [{ title: "Istoric — Gym-Connect" }] }),
-  component: HistoryPage,
-});
-
-function HistoryPage() {
+export function HistoryPage() {
   const { sessions, loaded } = useSessions();
 
   if (!loaded) {
