@@ -1,0 +1,48 @@
+# Render Blueprint — deploy frontend (static) + backend (API) împreună.
+# Docs: https://render.com/docs/blueprint-spec
+#
+# Variabilele cu `sync: false` NU se pun aici (sunt secrete / specifice mediului)
+# — le setezi manual în dashboard-ul Render, la fiecare serviciu.
+
+services:
+  # ─────────────────────────────────────────────────────────
+  # Backend: Express API (rulează non-stop, cu tsx)
+  # ─────────────────────────────────────────────────────────
+  - type: web
+    name: gym-connect-api
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm install --include=dev && npx prisma generate
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: DATABASE_URL
+        sync: false # connection string Neon (același din .env)
+      - key: CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false # URL-ul site-ului static, ex: https://gym-connect-web.onrender.com
+
+  # ─────────────────────────────────────────────────────────
+  # Frontend: SPA Vite/React (fișiere statice din dist/)
+  # ─────────────────────────────────────────────────────────
+  - type: web
+    name: gym-connect-web
+    runtime: static
+    buildCommand: npm install --include=dev && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: VITE_API_URL
+        sync: false # URL-ul API-ului, ex: https://gym-connect-api.onrender.com
+    routes:
+      # SPA fallback — orice rută client-side (React Router) servește index.html
+      - type: rewrite
+        source: /*
+        destination: /index.html

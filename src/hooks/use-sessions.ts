@@ -3,9 +3,13 @@ import { useAuth } from "@clerk/react";
 import { toast } from "sonner";
 import type { WorkoutSession } from "@/types/workout";
 
+// În dev e gol → căile relative trec prin proxy-ul Vite.
+// În producție = URL-ul absolut al API-ului (VITE_API_URL).
+const API_BASE = import.meta.env.VITE_API_URL ?? "";
+
 async function authFetch(url: string, getToken: () => Promise<string | null>, options?: RequestInit) {
   const token = await getToken();
-  const res = await fetch(url, {
+  const res = await fetch(`${API_BASE}${url}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",

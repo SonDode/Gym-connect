@@ -6,12 +6,14 @@
     "dev": "vite",
     "dev:server": "tsx watch server/index.ts",
     "dev:all": "concurrently -n web,api -c blue,green \"npm run dev\" \"npm run dev:server\"",
+    "start": "tsx server/index.ts",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@clerk/express": "^2.1.22",
@@ -66,6 +68,7 @@
     "react-resizable-panels": "^4.6.5",
     "react-router-dom": "^6.30.1",
     "recharts": "2.15.0",
+    "serve": "^14.2.6",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.1",
