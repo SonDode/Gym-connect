@@ -1,5 +1,5 @@
 import { useNavigate, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   Check,
   Minus,
@@ -274,107 +274,130 @@ function SetRow({
   const rm = predict1RM(set.weight, set.reps, set.rir);
 
   return (
-    <div
-      className={`flex items-center gap-2 px-3 py-2 transition-colors ${
-        set.completed ? "bg-success/10" : ""
-      }`}
-    >
-      <div className="w-6 shrink-0 text-center font-mono text-xs text-muted-foreground">
-        {set.isWarmup ? "W" : index + 1}
-      </div>
-
-      <div className="flex items-center gap-1">
-        <button
-          onClick={() => onUpdate({ weight: Math.max(0, set.weight - 2.5) })}
-          className="flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-muted-foreground hover:bg-secondary/70"
-        >
-          <Minus className="h-4 w-4" />
-        </button>
-        <Input
-          type="number"
-          inputMode="decimal"
-          value={set.weight}
-          onChange={(e) => onUpdate({ weight: Number(e.target.value) })}
-          className="h-9 w-20 text-center font-mono"
-        />
-        <button
-          onClick={() => onUpdate({ weight: set.weight + 2.5 })}
-          className="flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-muted-foreground hover:bg-secondary/70"
-        >
-          <Plus className="h-4 w-4" />
-        </button>
-      </div>
-
-      <div className="flex items-center gap-1">
-        <button
-          onClick={() => onUpdate({ reps: clampReps(set.reps - 1) })}
-          className="flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-muted-foreground hover:bg-secondary/70"
-        >
-          <Minus className="h-4 w-4" />
-        </button>
-        <Input
-          type="number"
-          inputMode="numeric"
-          min={1}
-          max={100}
-          step={1}
-          value={set.reps}
-          onChange={(e) => onUpdate({ reps: clampReps(Number(e.target.value)) })}
-          className="h-9 w-16 text-center font-mono"
-        />
-        <button
-          onClick={() => onUpdate({ reps: clampReps(set.reps + 1) })}
-          className="flex h-9 w-9 items-center justify-center rounded-lg bg-secondary text-muted-foreground hover:bg-secondary/70"
-        >
-          <Plus className="h-4 w-4" />
-        </button>
-      </div>
-
-      <select
-        value={set.rir}
-        onChange={(e) => onUpdate({ rir: Number(e.target.value) })}
-        className="h-9 rounded-lg border border-border bg-input px-2 text-xs font-mono"
-        title="Reps in Reserve"
-      >
-        {[0, 1, 2, 3, 4, 5].map((n) => (
-          <option key={n} value={n}>
-            R{n}
-          </option>
-        ))}
-      </select>
-
-      {!set.isWarmup && rm > 0 && (
-        <div className="hidden text-xs text-primary md:block" title="1RM estimat (Brzycki+Epley)">
-          ~{rm.toFixed(0)}
+    <div className={`px-3 py-3 transition-colors ${set.completed ? "bg-success/10" : ""}`}>
+      {/* Rând 1: număr serie + greutate + repetări */}
+      <div className="flex items-end gap-2">
+        <div className="mb-2 w-5 shrink-0 text-center font-mono text-xs text-muted-foreground">
+          {set.isWarmup ? "W" : index + 1}
         </div>
-      )}
 
-      <div className="ml-auto flex items-center gap-1">
-        <button
-          onClick={onOpenCalc}
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/70"
-          title="Calculator discuri"
-        >
-          <Calculator className="h-4 w-4" />
-        </button>
-        <button
-          onClick={onComplete}
-          className={`flex h-9 w-9 items-center justify-center rounded-lg transition-all ${
-            set.completed
-              ? "bg-success text-success-foreground"
-              : "bg-primary/10 text-primary hover:bg-primary/20"
-          }`}
-        >
-          <Check className="h-4 w-4" />
-        </button>
-        <button
-          onClick={onRemove}
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:text-destructive"
-        >
-          <Trash2 className="h-4 w-4" />
-        </button>
+        {/* Greutate */}
+        <label className="flex flex-1 flex-col gap-1">
+          <span className="pl-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+            Greutate (kg)
+          </span>
+          <div className="flex items-center gap-1">
+            <StepBtn onClick={() => onUpdate({ weight: Math.max(0, set.weight - 2.5) })}>
+              <Minus className="h-4 w-4" />
+            </StepBtn>
+            <Input
+              type="number"
+              inputMode="decimal"
+              value={set.weight}
+              onChange={(e) => onUpdate({ weight: Number(e.target.value) })}
+              className="h-9 w-full min-w-0 px-1 text-center font-mono"
+            />
+            <StepBtn onClick={() => onUpdate({ weight: set.weight + 2.5 })}>
+              <Plus className="h-4 w-4" />
+            </StepBtn>
+          </div>
+        </label>
+
+        {/* Repetări */}
+        <label className="flex flex-1 flex-col gap-1">
+          <span className="pl-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+            Repetări
+          </span>
+          <div className="flex items-center gap-1">
+            <StepBtn onClick={() => onUpdate({ reps: clampReps(set.reps - 1) })}>
+              <Minus className="h-4 w-4" />
+            </StepBtn>
+            <Input
+              type="number"
+              inputMode="numeric"
+              min={1}
+              max={100}
+              step={1}
+              value={set.reps}
+              onChange={(e) => onUpdate({ reps: clampReps(Number(e.target.value)) })}
+              className="h-9 w-full min-w-0 px-1 text-center font-mono"
+            />
+            <StepBtn onClick={() => onUpdate({ reps: clampReps(set.reps + 1) })}>
+              <Plus className="h-4 w-4" />
+            </StepBtn>
+          </div>
+        </label>
+      </div>
+
+      {/* Rând 2: RIR + 1RM estimat + acțiuni */}
+      <div className="mt-2.5 flex items-center gap-2 pl-7">
+        <label className="flex items-center gap-1.5">
+          <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+            RIR
+          </span>
+          <select
+            value={set.rir}
+            onChange={(e) => onUpdate({ rir: Number(e.target.value) })}
+            className="h-8 rounded-lg border border-border bg-input px-2 text-xs font-mono"
+            title="Repetări în rezervă (Reps in Reserve)"
+          >
+            {[0, 1, 2, 3, 4, 5].map((n) => (
+              <option key={n} value={n}>
+                R{n}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        {!set.isWarmup && rm > 0 && (
+          <span
+            className="rounded-md bg-primary/10 px-1.5 py-0.5 text-xs font-medium text-primary"
+            title="1RM estimat (Brzycki + Epley)"
+          >
+            ~{rm.toFixed(0)} kg
+          </span>
+        )}
+
+        <div className="ml-auto flex items-center gap-1">
+          <button
+            onClick={onOpenCalc}
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/70"
+            title="Calculator discuri"
+          >
+            <Calculator className="h-4 w-4" />
+          </button>
+          <button
+            onClick={onComplete}
+            className={`flex h-9 w-9 items-center justify-center rounded-lg transition-all ${
+              set.completed
+                ? "bg-success text-success-foreground"
+                : "bg-primary/15 text-primary hover:bg-primary/25"
+            }`}
+            title={set.completed ? "Serie completată" : "Marchează seria completă"}
+          >
+            <Check className="h-4 w-4" />
+          </button>
+          <button
+            onClick={onRemove}
+            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:text-destructive"
+            title="Șterge seria"
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+        </div>
       </div>
     </div>
+  );
+}
+
+function StepBtn({ onClick, children }: { onClick: () => void; children: ReactNode }) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground hover:bg-secondary/70"
+    >
+      {children}
+    </button>
   );
 }
 

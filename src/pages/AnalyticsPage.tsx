@@ -148,7 +148,7 @@ export function AnalyticsPage() {
       )}
 
       {/* Volum săptămânal */}
-      <div className="rounded-2xl border border-border bg-card p-6">
+      <div className="rounded-2xl border border-border bg-card p-4 md:p-6">
         <div className="mb-4 flex items-center gap-2">
           <TrendingUp className="h-5 w-5 text-primary" />
           <h2 className="font-display text-xl font-semibold">Volum săptămânal</h2>
@@ -156,9 +156,9 @@ export function AnalyticsPage() {
         {weeklyVolume.length === 0 ? (
           <Empty msg="Nu există date încă." />
         ) : (
-          <div className="h-72">
+          <div className="-mx-2 h-72 md:mx-0 md:h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={weeklyVolume}>
+              <AreaChart data={weeklyVolume} margin={{ top: 8, right: 12, left: -8, bottom: 0 }}>
                 <defs>
                   <linearGradient id="volGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="oklch(0.86 0.22 130)" stopOpacity={0.6} />
@@ -166,10 +166,18 @@ export function AnalyticsPage() {
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="oklch(0.27 0.014 250)" strokeDasharray="3 3" />
-                <XAxis dataKey="label" stroke="oklch(0.65 0.015 250)" fontSize={12} />
+                <XAxis
+                  dataKey="label"
+                  stroke="oklch(0.65 0.015 250)"
+                  fontSize={12}
+                  tickMargin={8}
+                  minTickGap={16}
+                  interval="preserveStartEnd"
+                />
                 <YAxis
                   stroke="oklch(0.65 0.015 250)"
                   fontSize={12}
+                  width={36}
                   tickFormatter={(v) => `${(v / 1000).toFixed(0)}t`}
                 />
                 <Tooltip
@@ -194,7 +202,7 @@ export function AnalyticsPage() {
       </div>
 
       {/* Predicție 1RM */}
-      <div className="rounded-2xl border border-border bg-card p-6">
+      <div className="rounded-2xl border border-border bg-card p-4 md:p-6">
         <div className="mb-4 flex items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <Brain className="h-5 w-5 text-primary" />
@@ -242,14 +250,25 @@ export function AnalyticsPage() {
               />
             </div>
 
-            <div className="h-80">
+            <div className="-mx-2 h-80 md:mx-0 md:h-96">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={oneRmData.combined}>
+                <LineChart
+                  data={oneRmData.combined}
+                  margin={{ top: 8, right: 12, left: -8, bottom: 0 }}
+                >
                   <CartesianGrid stroke="oklch(0.27 0.014 250)" strokeDasharray="3 3" />
-                  <XAxis dataKey="label" stroke="oklch(0.65 0.015 250)" fontSize={11} />
+                  <XAxis
+                    dataKey="label"
+                    stroke="oklch(0.65 0.015 250)"
+                    fontSize={11}
+                    tickMargin={8}
+                    minTickGap={20}
+                    interval="preserveStartEnd"
+                  />
                   <YAxis
                     stroke="oklch(0.65 0.015 250)"
                     fontSize={12}
+                    width={40}
                     domain={["auto", "auto"]}
                     tickFormatter={(v) => `${v}kg`}
                   />
