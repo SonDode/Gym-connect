@@ -21,14 +21,16 @@ export function LandingPage() {
     <div className="min-h-screen bg-background text-foreground">
       {/* NAV */}
       <header className="sticky top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-xl">
-        <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-primary shadow-glow">
+        <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-4 md:px-6">
+          <Link to="/" className="flex min-w-0 items-center gap-2">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-primary shadow-glow">
               <Dumbbell className="h-5 w-5 text-primary-foreground" />
             </div>
-            <span className="font-display text-xl font-bold tracking-tight">Gym-Connect</span>
+            <span className="truncate font-display text-lg font-bold tracking-tight sm:text-xl">
+              Gym-Connect
+            </span>
           </Link>
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             {isAuthenticated ? (
               <Link to="/dashboard">
                 <Button variant="default" size="sm">
@@ -37,14 +39,15 @@ export function LandingPage() {
               </Link>
             ) : (
               <>
-                <Link to="/login">
+                <Link to="/login" className="hidden sm:block">
                   <Button variant="ghost" size="sm">
                     Autentificare
                   </Button>
                 </Link>
                 <Link to="/register">
                   <Button variant="default" size="sm">
-                    Înregistrare gratuită
+                    <span className="sm:hidden">Înregistrare</span>
+                    <span className="hidden sm:inline">Înregistrare gratuită</span>
                   </Button>
                 </Link>
               </>
@@ -67,7 +70,7 @@ export function LandingPage() {
               <Zap className="h-3.5 w-3.5" />
               Sport science · În timp real
             </div>
-            <h1 className="font-display text-5xl font-bold leading-[1.05] tracking-tighter md:text-7xl">
+            <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-tighter sm:text-5xl md:text-7xl">
               Antrenamente fără <span className="text-gradient-primary">presupuneri</span>.
               <br />
               Doar progres măsurabil.

@@ -101,7 +101,7 @@ export function WorkoutPage() {
   const totalCount = active.sets.length;
 
   return (
-    <div className="space-y-4 pb-24">
+    <div className="space-y-4 pb-[calc(6rem+env(safe-area-inset-bottom))]">
       {/* Sticky timer header */}
       <div className="sticky top-[108px] z-30 -mx-4 border-b border-border bg-background/95 px-4 py-3 backdrop-blur md:-mx-6 md:px-6">
         <div className="flex items-center justify-between gap-3">
@@ -142,7 +142,7 @@ export function WorkoutPage() {
       </div>
 
       {/* Finish */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 p-4 backdrop-blur">
+      <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-border bg-background/95 px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-4 backdrop-blur">
         <div className="mx-auto max-w-7xl">
           <Button
             onClick={() => {
@@ -298,7 +298,7 @@ function SetRow({
             inputMode="decimal"
             value={set.weight}
             onChange={(e) => onUpdate({ weight: Number(e.target.value) })}
-            className="h-9 w-full min-w-0 px-1 text-center font-mono"
+            className="h-10 w-full min-w-0 px-1 text-center font-mono text-base"
           />
           <StepBtn onClick={() => onUpdate({ weight: set.weight + 2.5 })}>
             <Plus className="h-4 w-4" />
@@ -318,7 +318,7 @@ function SetRow({
             step={1}
             value={set.reps}
             onChange={(e) => onUpdate({ reps: clampReps(Number(e.target.value)) })}
-            className="h-9 w-full min-w-0 px-1 text-center font-mono"
+            className="h-10 w-full min-w-0 px-1 text-center font-mono text-base"
           />
           <StepBtn onClick={() => onUpdate({ reps: clampReps(set.reps + 1) })}>
             <Plus className="h-4 w-4" />
@@ -335,7 +335,7 @@ function SetRow({
           <select
             value={set.rir}
             onChange={(e) => onUpdate({ rir: Number(e.target.value) })}
-            className="h-8 rounded-lg border border-border bg-input px-2 text-xs font-mono"
+            className="h-10 rounded-lg border border-border bg-input px-2 text-sm font-mono"
             title="Repetări în rezervă (Reps in Reserve)"
           >
             {[0, 1, 2, 3, 4, 5].map((n) => (
@@ -355,31 +355,34 @@ function SetRow({
           </span>
         )}
 
-        <div className="ml-auto flex items-center gap-1">
+        <div className="ml-auto flex items-center gap-1.5">
+          <button
+            onClick={onRemove}
+            className="flex h-10 w-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-destructive active:bg-secondary/50"
+            title="Șterge seria"
+            aria-label="Șterge seria"
+          >
+            <Trash2 className="h-[18px] w-[18px]" />
+          </button>
           <button
             onClick={onOpenCalc}
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:bg-secondary/70"
+            className="flex h-10 w-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary/70 active:bg-secondary/50"
             title="Calculator discuri"
+            aria-label="Calculator discuri"
           >
-            <Calculator className="h-4 w-4" />
+            <Calculator className="h-[18px] w-[18px]" />
           </button>
           <button
             onClick={onComplete}
-            className={`flex h-9 w-9 items-center justify-center rounded-lg transition-all ${
+            className={`flex h-10 w-12 items-center justify-center rounded-lg transition-all active:scale-95 ${
               set.completed
                 ? "bg-success text-success-foreground"
-                : "bg-primary/15 text-primary hover:bg-primary/25"
+                : "bg-primary/20 text-primary ring-1 ring-inset ring-primary/40 hover:bg-primary/30"
             }`}
             title={set.completed ? "Serie completată" : "Marchează seria completă"}
+            aria-label={set.completed ? "Serie completată" : "Marchează seria completă"}
           >
-            <Check className="h-4 w-4" />
-          </button>
-          <button
-            onClick={onRemove}
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:text-destructive"
-            title="Șterge seria"
-          >
-            <Trash2 className="h-4 w-4" />
+            <Check className="h-5 w-5" strokeWidth={3} />
           </button>
         </div>
       </div>
@@ -391,7 +394,7 @@ function StepBtn({ onClick, children }: { onClick: () => void; children: ReactNo
   return (
     <button
       onClick={onClick}
-      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground hover:bg-secondary/70"
+      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary text-muted-foreground transition-colors hover:bg-secondary/70 active:bg-secondary/50"
     >
       {children}
     </button>
