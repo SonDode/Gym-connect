@@ -103,7 +103,7 @@ export function WorkoutPage() {
   return (
     <div className="space-y-4 pb-24">
       {/* Sticky timer header */}
-      <div className="sticky top-[124px] z-30 -mx-4 border-b border-border bg-background/95 px-4 py-3 backdrop-blur md:-mx-6 md:top-[120px] md:px-6">
+      <div className="sticky top-[108px] z-30 -mx-4 border-b border-border bg-background/95 px-4 py-3 backdrop-blur md:-mx-6 md:px-6">
         <div className="flex items-center justify-between gap-3">
           <div>
             <div className="text-xs uppercase tracking-wider text-muted-foreground">
@@ -214,6 +214,13 @@ function ExerciseBlock({
         </div>
       </div>
 
+      {/* Antet coloane (o singură dată) */}
+      <div className="flex items-center gap-2 px-3 pt-2.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+        <span className="w-5 shrink-0 text-center">#</span>
+        <span className="flex-1 text-center">Greutate (kg)</span>
+        <span className="flex-1 text-center">Repetări</span>
+      </div>
+
       <div className="divide-y divide-border">
         {sets.map((s, i) => (
           <SetRow
@@ -276,57 +283,47 @@ function SetRow({
   return (
     <div className={`px-3 py-3 transition-colors ${set.completed ? "bg-success/10" : ""}`}>
       {/* Rând 1: număr serie + greutate + repetări */}
-      <div className="flex items-end gap-2">
-        <div className="mb-2 w-5 shrink-0 text-center font-mono text-xs text-muted-foreground">
+      <div className="flex items-center gap-2">
+        <div className="w-5 shrink-0 text-center font-mono text-xs text-muted-foreground">
           {set.isWarmup ? "W" : index + 1}
         </div>
 
         {/* Greutate */}
-        <label className="flex flex-1 flex-col gap-1">
-          <span className="pl-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-            Greutate (kg)
-          </span>
-          <div className="flex items-center gap-1">
-            <StepBtn onClick={() => onUpdate({ weight: Math.max(0, set.weight - 2.5) })}>
-              <Minus className="h-4 w-4" />
-            </StepBtn>
-            <Input
-              type="number"
-              inputMode="decimal"
-              value={set.weight}
-              onChange={(e) => onUpdate({ weight: Number(e.target.value) })}
-              className="h-9 w-full min-w-0 px-1 text-center font-mono"
-            />
-            <StepBtn onClick={() => onUpdate({ weight: set.weight + 2.5 })}>
-              <Plus className="h-4 w-4" />
-            </StepBtn>
-          </div>
-        </label>
+        <div className="flex flex-1 items-center gap-1">
+          <StepBtn onClick={() => onUpdate({ weight: Math.max(0, set.weight - 2.5) })}>
+            <Minus className="h-4 w-4" />
+          </StepBtn>
+          <Input
+            type="number"
+            inputMode="decimal"
+            value={set.weight}
+            onChange={(e) => onUpdate({ weight: Number(e.target.value) })}
+            className="h-9 w-full min-w-0 px-1 text-center font-mono"
+          />
+          <StepBtn onClick={() => onUpdate({ weight: set.weight + 2.5 })}>
+            <Plus className="h-4 w-4" />
+          </StepBtn>
+        </div>
 
         {/* Repetări */}
-        <label className="flex flex-1 flex-col gap-1">
-          <span className="pl-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
-            Repetări
-          </span>
-          <div className="flex items-center gap-1">
-            <StepBtn onClick={() => onUpdate({ reps: clampReps(set.reps - 1) })}>
-              <Minus className="h-4 w-4" />
-            </StepBtn>
-            <Input
-              type="number"
-              inputMode="numeric"
-              min={1}
-              max={100}
-              step={1}
-              value={set.reps}
-              onChange={(e) => onUpdate({ reps: clampReps(Number(e.target.value)) })}
-              className="h-9 w-full min-w-0 px-1 text-center font-mono"
-            />
-            <StepBtn onClick={() => onUpdate({ reps: clampReps(set.reps + 1) })}>
-              <Plus className="h-4 w-4" />
-            </StepBtn>
-          </div>
-        </label>
+        <div className="flex flex-1 items-center gap-1">
+          <StepBtn onClick={() => onUpdate({ reps: clampReps(set.reps - 1) })}>
+            <Minus className="h-4 w-4" />
+          </StepBtn>
+          <Input
+            type="number"
+            inputMode="numeric"
+            min={1}
+            max={100}
+            step={1}
+            value={set.reps}
+            onChange={(e) => onUpdate({ reps: clampReps(Number(e.target.value)) })}
+            className="h-9 w-full min-w-0 px-1 text-center font-mono"
+          />
+          <StepBtn onClick={() => onUpdate({ reps: clampReps(set.reps + 1) })}>
+            <Plus className="h-4 w-4" />
+          </StepBtn>
+        </div>
       </div>
 
       {/* Rând 2: RIR + 1RM estimat + acțiuni */}
