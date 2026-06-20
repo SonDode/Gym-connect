@@ -203,7 +203,7 @@ export function AnalyticsPage() {
 
       {/* Predicție 1RM */}
       <div className="rounded-2xl border border-border bg-card p-4 md:p-6">
-        <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2">
             <Brain className="h-5 w-5 text-primary" />
             <h2 className="font-display text-xl font-semibold">Predicție 1RM</h2>
@@ -212,7 +212,7 @@ export function AnalyticsPage() {
             <select
               value={activeEx}
               onChange={(e) => setSelectedEx(e.target.value)}
-              className="rounded-lg border border-border bg-input px-3 py-1.5 text-sm focus:border-primary focus:outline-none"
+              className="w-full rounded-lg border border-border bg-input px-3 py-1.5 text-sm focus:border-primary focus:outline-none sm:w-auto"
             >
               {trackableExercises.map((ex) => (
                 <option key={ex.id} value={ex.id}>

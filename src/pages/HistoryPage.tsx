@@ -134,7 +134,7 @@ function SessionCard({ session }: { session: ReturnType<typeof useSessions>["ses
           </div>
           <h3 className="mt-1 truncate font-display text-lg font-semibold">{session.splitName}</h3>
         </div>
-        <div className="flex shrink-0 items-center gap-4 text-sm">
+        <div className="flex shrink-0 items-center gap-3 text-sm sm:gap-4">
           <div className="text-right">
             <div className="text-xs text-muted-foreground">Volum</div>
             <div className="font-mono font-semibold">{volume.toLocaleString("ro-RO")} kg</div>
@@ -166,7 +166,7 @@ function SessionCard({ session }: { session: ReturnType<typeof useSessions>["ses
                     {sets.map((s, i) => (
                       <div
                         key={s.id}
-                        className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm ${
+                        className={`flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg px-3 py-2 text-sm ${
                           s.isWarmup ? "text-muted-foreground" : "bg-secondary/50"
                         }`}
                       >

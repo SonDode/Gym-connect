@@ -44,12 +44,13 @@ export function SplitsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-end justify-between gap-4">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <h1 className="font-display text-3xl font-bold tracking-tight">Rutine</h1>
           <p className="mt-1 text-muted-foreground">Construiește-ți split-urile personalizate.</p>
         </div>
         <Button
+          className="w-full sm:w-auto"
           onClick={() =>
             setEditing({
               id: `split-${Date.now()}`,
