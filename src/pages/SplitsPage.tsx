@@ -202,7 +202,7 @@ function SplitEditor({
 
   return (
     <Dialog open onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
+      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto overflow-x-hidden">
         <DialogHeader>
           <DialogTitle>{split.name ? "Editează rutina" : "Rutină nouă"}</DialogTitle>
         </DialogHeader>
@@ -244,44 +244,56 @@ function SplitEditor({
                 return (
                   <div
                     key={sx.exerciseId}
-                    className="flex items-center gap-2 rounded-lg border border-border bg-secondary/30 p-2"
+                    className="rounded-lg border border-border bg-secondary/30 p-2.5"
                   >
-                    <div className="min-w-0 flex-1">
-                      <div className="truncate text-sm font-medium">
-                        {ex?.name ?? sx.exerciseId}
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <div className="text-sm font-medium leading-snug">
+                          {ex?.name ?? sx.exerciseId}
+                        </div>
+                        <div className="text-xs text-muted-foreground">
+                          {ex && MUSCLE_GROUP_LABELS[ex.muscleGroup]}
+                        </div>
                       </div>
-                      <div className="text-xs text-muted-foreground">
-                        {ex && MUSCLE_GROUP_LABELS[ex.muscleGroup]}
-                      </div>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        className="h-8 w-8 shrink-0"
+                        onClick={() => removeExercise(sx.exerciseId)}
+                        aria-label="Elimină exercițiul"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
                     </div>
-                    <Input
-                      type="number"
-                      value={sx.targetSets}
-                      onChange={(e) =>
-                        updateExercise(sx.exerciseId, {
-                          targetSets: Number(e.target.value),
-                        })
-                      }
-                      className="h-9 w-16"
-                      min={1}
-                    />
-                    <Input
-                      value={sx.targetRepRange}
-                      onChange={(e) =>
-                        updateExercise(sx.exerciseId, {
-                          targetRepRange: e.target.value,
-                        })
-                      }
-                      className="h-9 w-20 font-mono"
-                      placeholder="8-12"
-                    />
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      onClick={() => removeExercise(sx.exerciseId)}
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
+                    <div className="mt-2 flex items-center gap-3">
+                      <label className="flex items-center gap-2 text-xs text-muted-foreground">
+                        Serii
+                        <Input
+                          type="number"
+                          value={sx.targetSets}
+                          onChange={(e) =>
+                            updateExercise(sx.exerciseId, {
+                              targetSets: Number(e.target.value),
+                            })
+                          }
+                          className="h-9 w-16 text-center font-mono text-base"
+                          min={1}
+                        />
+                      </label>
+                      <label className="flex items-center gap-2 text-xs text-muted-foreground">
+                        Repetări
+                        <Input
+                          value={sx.targetRepRange}
+                          onChange={(e) =>
+                            updateExercise(sx.exerciseId, {
+                              targetRepRange: e.target.value,
+                            })
+                          }
+                          className="h-9 w-20 text-center font-mono text-base"
+                          placeholder="8-12"
+                        />
+                      </label>
+                    </div>
                   </div>
                 );
               })}
